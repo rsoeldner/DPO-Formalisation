@@ -6,6 +6,7 @@ https://link.springer.com/content/pdf/10.1007/3-540-31188-2.pdf?pdf=button
  *)
 (*  declare [[show_sorts]]
  *) 
+text_raw \<open>\DefineSnippet{parallel-independence}{\<close>
 locale parallel_independence =
   p\<^sub>1: direct_derivation r\<^sub>1 b\<^sub>1 b\<^sub>1' G g\<^sub>1 D\<^sub>1 m\<^sub>1 c\<^sub>1 H\<^sub>1 f\<^sub>1 h\<^sub>1 +
   p\<^sub>2: direct_derivation r\<^sub>2 b\<^sub>2 b\<^sub>2' G g\<^sub>2 D\<^sub>2 m\<^sub>2 c\<^sub>2 H\<^sub>2 f\<^sub>2 h\<^sub>2
@@ -18,6 +19,7 @@ locale parallel_independence =
     j: \<open>\<exists>j. morphism (lhs r\<^sub>2) D\<^sub>1 j 
             \<and> (\<forall>v \<in> V\<^bsub>lhs r\<^sub>2\<^esub>. \<^bsub>c\<^sub>1 \<circ>\<^sub>\<rightarrow> j\<^esub>\<^sub>V v = \<^bsub>g\<^sub>2\<^esub>\<^sub>V v) 
             \<and> (\<forall>e \<in> E\<^bsub>lhs r\<^sub>2\<^esub>. \<^bsub>c\<^sub>1 \<circ>\<^sub>\<rightarrow> j\<^esub>\<^sub>E e = \<^bsub>g\<^sub>2\<^esub>\<^sub>E e)\<close>
+text_raw \<open>}%EndSnippet\<close>
 
 locale sequential_independence =
   p\<^sub>1: direct_derivation r\<^sub>1 b\<^sub>1 b\<^sub>1' G g\<^sub>1 D\<^sub>1 m\<^sub>1 c\<^sub>1 H\<^sub>1 f\<^sub>1 h\<^sub>1 +
@@ -106,12 +108,12 @@ proof -
 
 (* j1 start *)
   have a: \<open>\<^bsub>c\<^sub>1 \<circ>\<^sub>\<rightarrow> m\<^sub>1\<^esub>\<^sub>V v = \<^bsub>c\<^sub>2 \<circ>\<^sub>\<rightarrow> (i\<^sub>1 \<circ>\<^sub>\<rightarrow> b\<^sub>1)\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>interf r\<^sub>1\<^esub>\<close> for v
-    using that "c12.pb.node_commutativity"  \<open>\<forall>v \<in> V\<^bsub>lhs r\<^sub>1\<^esub>. \<^bsub>c\<^sub>2 \<circ>\<^sub>\<rightarrow> i\<^sub>1\<^esub>\<^sub>V v = \<^bsub>g\<^sub>1\<^esub>\<^sub>V v\<close>
-      p\<^sub>1.po1.node_commutativity p\<^sub>1.r.k.morph_node_range
+    using that "c12.pb.node_comm"  \<open>\<forall>v \<in> V\<^bsub>lhs r\<^sub>1\<^esub>. \<^bsub>c\<^sub>2 \<circ>\<^sub>\<rightarrow> i\<^sub>1\<^esub>\<^sub>V v = \<^bsub>g\<^sub>1\<^esub>\<^sub>V v\<close>
+      p\<^sub>1.po1.node_comm p\<^sub>1.r.k.morph_node_range
     by (simp add: morph_comp_def "c12.b_def" "c12.c_def" "c12.A_def")
   have b: \<open>\<^bsub>c\<^sub>1 \<circ>\<^sub>\<rightarrow> m\<^sub>1\<^esub>\<^sub>E e = \<^bsub>c\<^sub>2 \<circ>\<^sub>\<rightarrow> (i\<^sub>1 \<circ>\<^sub>\<rightarrow> b\<^sub>1)\<^esub>\<^sub>E e\<close> if \<open>e \<in> E\<^bsub>interf r\<^sub>1\<^esub>\<close> for e
-    using that "c12.pb.edge_commutativity"  \<open>\<forall>e \<in> E\<^bsub>lhs r\<^sub>1\<^esub>. \<^bsub>c\<^sub>2 \<circ>\<^sub>\<rightarrow> i\<^sub>1\<^esub>\<^sub>E e = \<^bsub>g\<^sub>1\<^esub>\<^sub>E e\<close>
-      p\<^sub>1.po1.edge_commutativity p\<^sub>1.r.k.morph_edge_range
+    using that "c12.pb.edge_comm"  \<open>\<forall>e \<in> E\<^bsub>lhs r\<^sub>1\<^esub>. \<^bsub>c\<^sub>2 \<circ>\<^sub>\<rightarrow> i\<^sub>1\<^esub>\<^sub>E e = \<^bsub>g\<^sub>1\<^esub>\<^sub>E e\<close>
+      p\<^sub>1.po1.edge_comm p\<^sub>1.r.k.morph_edge_range
     by (simp add: morph_comp_def "c12.b_def" "c12.c_def" "c12.A_def")
 
   obtain j\<^sub>1 where \<open>morphism (interf r\<^sub>1) c12.A j\<^sub>1\<close>
@@ -145,13 +147,13 @@ proof -
 
 
   have a: \<open>\<^bsub>c\<^sub>1 \<circ>\<^sub>\<rightarrow> (i\<^sub>2 \<circ>\<^sub>\<rightarrow> b\<^sub>2)\<^esub>\<^sub>V v = \<^bsub>c\<^sub>2 \<circ>\<^sub>\<rightarrow> m\<^sub>2\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>interf r\<^sub>2\<^esub>\<close> for v
-    using c12.pb.node_commutativity  \<open>\<forall>v \<in> V\<^bsub>lhs r\<^sub>2\<^esub>. \<^bsub>c\<^sub>1 \<circ>\<^sub>\<rightarrow> i\<^sub>2\<^esub>\<^sub>V v = \<^bsub>g\<^sub>2\<^esub>\<^sub>V v\<close>
-      p\<^sub>2.po1.node_commutativity p\<^sub>2.r.k.morph_node_range that
+    using c12.pb.node_comm  \<open>\<forall>v \<in> V\<^bsub>lhs r\<^sub>2\<^esub>. \<^bsub>c\<^sub>1 \<circ>\<^sub>\<rightarrow> i\<^sub>2\<^esub>\<^sub>V v = \<^bsub>g\<^sub>2\<^esub>\<^sub>V v\<close>
+      p\<^sub>2.po1.node_comm p\<^sub>2.r.k.morph_node_range that
     by (simp add: morph_comp_def c12.b_def c12.c_def c12.A_def)
 
   have b: \<open>\<^bsub>c\<^sub>1 \<circ>\<^sub>\<rightarrow> (i\<^sub>2 \<circ>\<^sub>\<rightarrow> b\<^sub>2)\<^esub>\<^sub>E e = \<^bsub>c\<^sub>2 \<circ>\<^sub>\<rightarrow> m\<^sub>2\<^esub>\<^sub>E e\<close> if \<open>e \<in> E\<^bsub>interf r\<^sub>2\<^esub>\<close> for e
-    using c12.pb.edge_commutativity  \<open>\<forall>e \<in> E\<^bsub>lhs r\<^sub>2\<^esub>. \<^bsub>c\<^sub>1 \<circ>\<^sub>\<rightarrow> i\<^sub>2\<^esub>\<^sub>E e = \<^bsub>g\<^sub>2\<^esub>\<^sub>E e\<close>
-      p\<^sub>2.po1.edge_commutativity p\<^sub>2.r.k.morph_edge_range that
+    using c12.pb.edge_comm  \<open>\<forall>e \<in> E\<^bsub>lhs r\<^sub>2\<^esub>. \<^bsub>c\<^sub>1 \<circ>\<^sub>\<rightarrow> i\<^sub>2\<^esub>\<^sub>E e = \<^bsub>g\<^sub>2\<^esub>\<^sub>E e\<close>
+      p\<^sub>2.po1.edge_comm p\<^sub>2.r.k.morph_edge_range that
     by (simp add: morph_comp_def c12.b_def c12.c_def c12.A_def)
 
   obtain j\<^sub>2 where \<open>morphism (interf r\<^sub>2) c12.A j\<^sub>2\<close>
@@ -190,12 +192,12 @@ proof -
                                  "c12.b \<circ>\<^sub>\<rightarrow> j\<^sub>1" b\<^sub>1 c\<^sub>1 "c\<^sub>2 \<circ>\<^sub>\<rightarrow> i\<^sub>1"
   proof 
     show \<open>\<^bsub>c\<^sub>1 \<circ>\<^sub>\<rightarrow> (c12.b \<circ>\<^sub>\<rightarrow> j\<^sub>1)\<^esub>\<^sub>V v = \<^bsub>c\<^sub>2 \<circ>\<^sub>\<rightarrow> i\<^sub>1 \<circ>\<^sub>\<rightarrow> b\<^sub>1\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>interf r\<^sub>1\<^esub>\<close> for v
-      using that p\<^sub>1.po1.node_commutativity \<open>\<And>v. v\<in>V\<^bsub>interf r\<^sub>1\<^esub> \<Longrightarrow> \<^bsub>c12.b \<circ>\<^sub>\<rightarrow> j\<^sub>1\<^esub>\<^sub>V v = \<^bsub>m\<^sub>1\<^esub>\<^sub>V v\<close>
+      using that p\<^sub>1.po1.node_comm \<open>\<And>v. v\<in>V\<^bsub>interf r\<^sub>1\<^esub> \<Longrightarrow> \<^bsub>c12.b \<circ>\<^sub>\<rightarrow> j\<^sub>1\<^esub>\<^sub>V v = \<^bsub>m\<^sub>1\<^esub>\<^sub>V v\<close>
         \<open>\<forall>v \<in> V\<^bsub>lhs r\<^sub>1\<^esub>. \<^bsub>c\<^sub>2 \<circ>\<^sub>\<rightarrow> i\<^sub>1\<^esub>\<^sub>V v = \<^bsub>g\<^sub>1\<^esub>\<^sub>V v\<close>  p\<^sub>1.r.k.morph_node_range
       by (simp add: morph_comp_def)
   next
     show \<open>\<^bsub>c\<^sub>1 \<circ>\<^sub>\<rightarrow> (c12.b \<circ>\<^sub>\<rightarrow> j\<^sub>1)\<^esub>\<^sub>E e = \<^bsub>c\<^sub>2 \<circ>\<^sub>\<rightarrow> i\<^sub>1 \<circ>\<^sub>\<rightarrow> b\<^sub>1\<^esub>\<^sub>E e\<close> if \<open>e \<in> E\<^bsub>interf r\<^sub>1\<^esub>\<close> for e
-      using that p\<^sub>1.po1.edge_commutativity \<open>\<And>e. e\<in>E\<^bsub>interf r\<^sub>1\<^esub> \<Longrightarrow> \<^bsub>c12.b \<circ>\<^sub>\<rightarrow> j\<^sub>1\<^esub>\<^sub>E e = \<^bsub>m\<^sub>1\<^esub>\<^sub>E e\<close>
+      using that p\<^sub>1.po1.edge_comm \<open>\<And>e. e\<in>E\<^bsub>interf r\<^sub>1\<^esub> \<Longrightarrow> \<^bsub>c12.b \<circ>\<^sub>\<rightarrow> j\<^sub>1\<^esub>\<^sub>E e = \<^bsub>m\<^sub>1\<^esub>\<^sub>E e\<close>
         \<open>\<forall>e \<in> E\<^bsub>lhs r\<^sub>1\<^esub>. \<^bsub>c\<^sub>2 \<circ>\<^sub>\<rightarrow> i\<^sub>1\<^esub>\<^sub>E e = \<^bsub>g\<^sub>1\<^esub>\<^sub>E e\<close>  p\<^sub>1.r.k.morph_edge_range
       by (simp add: morph_comp_def)
   next
@@ -333,10 +335,10 @@ proof -
     by assumption
 
   have a: \<open>\<^bsub>c\<^sub>1 \<circ>\<^sub>\<rightarrow> c12.b \<circ>\<^sub>\<rightarrow> j\<^sub>1\<^esub>\<^sub>V v = \<^bsub>c\<^sub>2 \<circ>\<^sub>\<rightarrow> i\<^sub>1 \<circ>\<^sub>\<rightarrow> b\<^sub>1\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>interf r\<^sub>1\<^esub>\<close> for v
-    using that "11+12.node_commutativity"
+    using that "11+12.node_comm"
     by(simp add: morph_comp_def)
   have b: \<open>\<^bsub>c\<^sub>1 \<circ>\<^sub>\<rightarrow> c12.b \<circ>\<^sub>\<rightarrow> j\<^sub>1\<^esub>\<^sub>E e = \<^bsub>c\<^sub>2 \<circ>\<^sub>\<rightarrow> i\<^sub>1 \<circ>\<^sub>\<rightarrow> b\<^sub>1\<^esub>\<^sub>E e\<close> if \<open>e \<in> E\<^bsub>interf r\<^sub>1\<^esub>\<close> for e
-    using that "11+12.edge_commutativity"
+    using that "11+12.edge_comm"
     by(simp add: morph_comp_def)
 
 
@@ -391,7 +393,7 @@ proof -
           pb11.reduced_chain_condition_edges
           jointly_surj_nodes jointly_surj_edges] by blast
   interpret pushout_diagram c12.A D\<^sub>1 D\<^sub>2 G c12.b c12.c c\<^sub>1 c\<^sub>2
-    using pushout_decomposition[OF c12.b.morphism_axioms p\<^sub>2.po1.g.morphism_axioms "11.pushout_diagram_axioms" "11+12.pushout_diagram_axioms"  c12.pb.node_commutativity c12.pb.edge_commutativity]
+    using pushout_decomposition[OF c12.b.morphism_axioms p\<^sub>2.po1.g.morphism_axioms "11.pushout_diagram_axioms" "11+12.pushout_diagram_axioms"  c12.pb.node_comm c12.pb.edge_comm]
     by simp
 
   interpret morphism "interf r\<^sub>2" D\<^sub>2 "c12.c \<circ>\<^sub>\<rightarrow> j\<^sub>2"
@@ -432,12 +434,12 @@ proof -
   interpret "31+32": pushout_diagram "interf r\<^sub>2" D\<^sub>2 "lhs r\<^sub>2" G "c12.c \<circ>\<^sub>\<rightarrow> j\<^sub>2" b\<^sub>2 c\<^sub>2 "c\<^sub>1 \<circ>\<^sub>\<rightarrow> i\<^sub>2"
   proof
     show \<open>\<^bsub>c\<^sub>2 \<circ>\<^sub>\<rightarrow> (c12.c \<circ>\<^sub>\<rightarrow> j\<^sub>2)\<^esub>\<^sub>V v = \<^bsub>c\<^sub>1 \<circ>\<^sub>\<rightarrow> i\<^sub>2 \<circ>\<^sub>\<rightarrow> b\<^sub>2\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>interf r\<^sub>2\<^esub>\<close> for v
-      using that p\<^sub>2.po1.node_commutativity p\<^sub>2.r.k.morph_node_range
+      using that p\<^sub>2.po1.node_comm p\<^sub>2.r.k.morph_node_range
         \<open>\<forall>v \<in> V\<^bsub>lhs r\<^sub>2\<^esub>. \<^bsub>c\<^sub>1 \<circ>\<^sub>\<rightarrow> i\<^sub>2\<^esub>\<^sub>V v = \<^bsub>g\<^sub>2\<^esub>\<^sub>V v\<close> \<open>\<And>v. v\<in>V\<^bsub>interf r\<^sub>2\<^esub> \<Longrightarrow> \<^bsub>c12.c \<circ>\<^sub>\<rightarrow> j\<^sub>2\<^esub>\<^sub>V v = \<^bsub>m\<^sub>2\<^esub>\<^sub>V v\<close> 
       by (simp add: morph_comp_def)
   next
     show \<open>\<^bsub>c\<^sub>2 \<circ>\<^sub>\<rightarrow> (c12.c \<circ>\<^sub>\<rightarrow> j\<^sub>2)\<^esub>\<^sub>E e = \<^bsub>c\<^sub>1 \<circ>\<^sub>\<rightarrow> i\<^sub>2 \<circ>\<^sub>\<rightarrow> b\<^sub>2\<^esub>\<^sub>E e\<close> if \<open>e \<in> E\<^bsub>interf r\<^sub>2\<^esub>\<close> for e
-      using that p\<^sub>2.po1.edge_commutativity p\<^sub>2.r.k.morph_edge_range
+      using that p\<^sub>2.po1.edge_comm p\<^sub>2.r.k.morph_edge_range
         \<open>\<forall>e \<in> E\<^bsub>lhs r\<^sub>2\<^esub>. \<^bsub>c\<^sub>1 \<circ>\<^sub>\<rightarrow> i\<^sub>2\<^esub>\<^sub>E e = \<^bsub>g\<^sub>2\<^esub>\<^sub>E e\<close> \<open>\<And>e. e\<in>E\<^bsub>interf r\<^sub>2\<^esub> \<Longrightarrow> \<^bsub>c12.c \<circ>\<^sub>\<rightarrow> j\<^sub>2\<^esub>\<^sub>E e= \<^bsub>m\<^sub>2\<^esub>\<^sub>E e\<close> 
       by (simp add: morph_comp_def)
   next
@@ -563,11 +565,11 @@ proof -
 
 
   have a: \<open>\<^bsub>c\<^sub>2 \<circ>\<^sub>\<rightarrow> c12.c \<circ>\<^sub>\<rightarrow> j\<^sub>2\<^esub>\<^sub>V v = \<^bsub>c\<^sub>1 \<circ>\<^sub>\<rightarrow> i\<^sub>2 \<circ>\<^sub>\<rightarrow> b\<^sub>2\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>interf r\<^sub>2\<^esub>\<close> for v
-    using  "31+32.node_commutativity" that
+    using  "31+32.node_comm" that
     by (simp add: morph_comp_def)
 
   have b: \<open>\<^bsub>c\<^sub>2 \<circ>\<^sub>\<rightarrow> c12.c \<circ>\<^sub>\<rightarrow> j\<^sub>2\<^esub>\<^sub>E e = \<^bsub>c\<^sub>1 \<circ>\<^sub>\<rightarrow> i\<^sub>2 \<circ>\<^sub>\<rightarrow> b\<^sub>2\<^esub>\<^sub>E e\<close> if \<open>e \<in> E\<^bsub>interf r\<^sub>2\<^esub>\<close> for e
-    using  "31+32.edge_commutativity" that
+    using  "31+32.edge_comm" that
     by (simp add: morph_comp_def)
 
 
@@ -620,11 +622,11 @@ proof -
 
 (* aaa and bbb belong to s\<^sub>1 *)
   have  aaa: \<open>\<forall>v\<in>V\<^bsub>interf r\<^sub>1\<^esub>. \<^bsub>f\<^sub>1 \<circ>\<^sub>\<rightarrow> b\<^sub>1'\<^esub>\<^sub>V v = \<^bsub>h\<^sub>1 \<circ>\<^sub>\<rightarrow> c12.b \<circ>\<^sub>\<rightarrow> j\<^sub>1\<^esub>\<^sub>V v\<close>
-    using p\<^sub>1.po2.node_commutativity a \<open>\<And>v. v\<in>V\<^bsub>interf r\<^sub>1\<^esub> \<Longrightarrow> \<^bsub>c12.b \<circ>\<^sub>\<rightarrow> j\<^sub>1\<^esub>\<^sub>V v = \<^bsub>m\<^sub>1\<^esub>\<^sub>V v\<close>
+    using p\<^sub>1.po2.node_comm a \<open>\<And>v. v\<in>V\<^bsub>interf r\<^sub>1\<^esub> \<Longrightarrow> \<^bsub>c12.b \<circ>\<^sub>\<rightarrow> j\<^sub>1\<^esub>\<^sub>V v = \<^bsub>m\<^sub>1\<^esub>\<^sub>V v\<close>
     by (simp add: morph_comp_def) 
     
   have bbb: \<open>\<forall>e\<in>E\<^bsub>interf r\<^sub>1\<^esub>. \<^bsub>f\<^sub>1 \<circ>\<^sub>\<rightarrow>  b\<^sub>1'\<^esub>\<^sub>E e = \<^bsub>h\<^sub>1 \<circ>\<^sub>\<rightarrow> c12.b \<circ>\<^sub>\<rightarrow> j\<^sub>1\<^esub>\<^sub>E e\<close>
-    using p\<^sub>1.po2.edge_commutativity b \<open>\<And>e. e\<in>E\<^bsub>interf r\<^sub>1\<^esub> \<Longrightarrow> \<^bsub>c12.b \<circ>\<^sub>\<rightarrow> j\<^sub>1\<^esub>\<^sub>E e = \<^bsub>m\<^sub>1\<^esub>\<^sub>E e\<close>
+    using p\<^sub>1.po2.edge_comm b \<open>\<And>e. e\<in>E\<^bsub>interf r\<^sub>1\<^esub> \<Longrightarrow> \<^bsub>c12.b \<circ>\<^sub>\<rightarrow> j\<^sub>1\<^esub>\<^sub>E e = \<^bsub>m\<^sub>1\<^esub>\<^sub>E e\<close>
     by (simp add: morph_comp_def) 
 
   obtain s\<^sub>1 where
@@ -844,12 +846,12 @@ proof -
 (* start of s\<^sub>2 *)
 
   have aaa2: \<open>\<forall>v\<in>V\<^bsub>interf r\<^sub>2\<^esub>. \<^bsub>f\<^sub>2 \<circ>\<^sub>\<rightarrow> b\<^sub>2'\<^esub>\<^sub>V v = \<^bsub>h\<^sub>2 \<circ>\<^sub>\<rightarrow> c12.c \<circ>\<^sub>\<rightarrow> j\<^sub>2\<^esub>\<^sub>V v\<close>
-    using p\<^sub>2.po2.node_commutativity  \<open>\<And>v. v\<in>V\<^bsub>interf r\<^sub>1\<^esub> \<Longrightarrow> \<^bsub>c12.c \<circ>\<^sub>\<rightarrow> j\<^sub>1\<^esub>\<^sub>V v = \<^bsub>i\<^sub>1 \<circ>\<^sub>\<rightarrow> b\<^sub>1\<^esub>\<^sub>V v\<close>
+    using p\<^sub>2.po2.node_comm  \<open>\<And>v. v\<in>V\<^bsub>interf r\<^sub>1\<^esub> \<Longrightarrow> \<^bsub>c12.c \<circ>\<^sub>\<rightarrow> j\<^sub>1\<^esub>\<^sub>V v = \<^bsub>i\<^sub>1 \<circ>\<^sub>\<rightarrow> b\<^sub>1\<^esub>\<^sub>V v\<close>
       \<open>\<And>v. v\<in>V\<^bsub>interf r\<^sub>2\<^esub> \<Longrightarrow> \<^bsub>c12.c \<circ>\<^sub>\<rightarrow> j\<^sub>2\<^esub>\<^sub>V v = \<^bsub>m\<^sub>2\<^esub>\<^sub>V v\<close> 
     by (simp add: morph_comp_def) 
 
   have bbb2: \<open>\<forall>e\<in>E\<^bsub>interf r\<^sub>2\<^esub>. \<^bsub>f\<^sub>2 \<circ>\<^sub>\<rightarrow> b\<^sub>2'\<^esub>\<^sub>E e = \<^bsub>h\<^sub>2 \<circ>\<^sub>\<rightarrow> c12.c \<circ>\<^sub>\<rightarrow> j\<^sub>2\<^esub>\<^sub>E e\<close>
-    using p\<^sub>2.po2.edge_commutativity  \<open>\<And>e. e\<in>E\<^bsub>interf r\<^sub>1\<^esub> \<Longrightarrow> \<^bsub>c12.c \<circ>\<^sub>\<rightarrow> j\<^sub>1\<^esub>\<^sub>E e = \<^bsub>i\<^sub>1 \<circ>\<^sub>\<rightarrow> b\<^sub>1\<^esub>\<^sub>E e\<close>
+    using p\<^sub>2.po2.edge_comm  \<open>\<And>e. e\<in>E\<^bsub>interf r\<^sub>1\<^esub> \<Longrightarrow> \<^bsub>c12.c \<circ>\<^sub>\<rightarrow> j\<^sub>1\<^esub>\<^sub>E e = \<^bsub>i\<^sub>1 \<circ>\<^sub>\<rightarrow> b\<^sub>1\<^esub>\<^sub>E e\<close>
       \<open>\<And>e. e\<in>E\<^bsub>interf r\<^sub>2\<^esub> \<Longrightarrow> \<^bsub>c12.c \<circ>\<^sub>\<rightarrow> j\<^sub>2\<^esub>\<^sub>E e = \<^bsub>m\<^sub>2\<^esub>\<^sub>E e\<close> 
     by (simp add: morph_comp_def)
 
@@ -909,13 +911,13 @@ proof -
   proof
     show \<open>\<^bsub>s\<^sub>2 \<circ>\<^sub>\<rightarrow> c41.h \<circ>\<^sub>\<rightarrow> b\<^sub>2'\<^esub>\<^sub>V v = \<^bsub>h\<^sub>2 \<circ>\<^sub>\<rightarrow> (c12.c \<circ>\<^sub>\<rightarrow> j\<^sub>2)\<^esub>\<^sub>V v\<close>
       if \<open>v \<in> V\<^bsub>interf r\<^sub>2\<^esub>\<close> for v
-      using that p\<^sub>2.po2.node_commutativity aaa2  p\<^sub>2.r.r.morph_node_range
+      using that p\<^sub>2.po2.node_comm aaa2  p\<^sub>2.r.r.morph_node_range
         \<open>\<And>v. v \<in> V\<^bsub>rhs r\<^sub>2\<^esub> \<Longrightarrow> \<^bsub>s\<^sub>2 \<circ>\<^sub>\<rightarrow> c41.h\<^esub>\<^sub>V v = \<^bsub>f\<^sub>2\<^esub>\<^sub>V v\<close>
       by (simp add: morph_comp_def)
   next
     show \<open>\<^bsub>s\<^sub>2 \<circ>\<^sub>\<rightarrow> c41.h \<circ>\<^sub>\<rightarrow> b\<^sub>2'\<^esub>\<^sub>E e = \<^bsub>h\<^sub>2 \<circ>\<^sub>\<rightarrow> (c12.c \<circ>\<^sub>\<rightarrow> j\<^sub>2)\<^esub>\<^sub>E e\<close> 
       if \<open>e \<in> E\<^bsub>interf r\<^sub>2\<^esub>\<close> for e
-      using that p\<^sub>2.po2.edge_commutativity bbb2  p\<^sub>2.r.r.morph_edge_range
+      using that p\<^sub>2.po2.edge_comm bbb2  p\<^sub>2.r.r.morph_edge_range
         \<open>\<And>e. e\<in> E\<^bsub>rhs r\<^sub>2\<^esub> \<Longrightarrow> \<^bsub>s\<^sub>2 \<circ>\<^sub>\<rightarrow> c41.h\<^esub>\<^sub>E e = \<^bsub>f\<^sub>2\<^esub>\<^sub>E e\<close>
       by (simp add: morph_comp_def)
   next

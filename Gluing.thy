@@ -322,10 +322,10 @@ lemma reduced_chain_condition_nodes:
 and \<open>y \<in> V\<^bsub>D\<^esub>\<close>
 and \<open>\<^bsub>h\<^esub>\<^sub>V x = \<^bsub>c\<^esub>\<^sub>V y\<close>
 shows \<open>\<exists>a \<in> V\<^bsub>K\<^esub>. (\<^bsub>b\<^esub>\<^sub>V a = x \<and> \<^bsub>d\<^esub>\<^sub>V a = y)\<close>
-  using assms  Inr_Inl_False image_iff Inl_inject image_iff po.node_commutativity
+  using assms  Inr_Inl_False image_iff Inl_inject image_iff po.node_comm
   unfolding h_def c_def morph_comp_def
   apply (auto simp add: c_def h_def morph_comp_def )
-  using assms  Inr_Inl_False image_iff Inl_inject image_iff po.node_commutativity
+  using assms  Inr_Inl_False image_iff Inl_inject image_iff po.node_comm
   using inv_into_f_f r.injective_morphism_axioms
   by (smt (verit, del_insts) Inl_inject Inr_Inl_False image_iff)
 
@@ -336,7 +336,7 @@ lemma reduced_chain_condition_edges:
 and \<open>y \<in> E\<^bsub>D\<^esub>\<close>
 and \<open>\<^bsub>h\<^esub>\<^sub>E x = \<^bsub>c\<^esub>\<^sub>E y\<close>
 shows \<open>\<exists>a \<in> E\<^bsub>K\<^esub>. (\<^bsub>b\<^esub>\<^sub>E a = x \<and> \<^bsub>d\<^esub>\<^sub>E a = y)\<close>
-  using assms  Inr_Inl_False image_iff Inl_inject image_iff po.edge_commutativity
+  using assms  Inr_Inl_False image_iff Inl_inject image_iff po.edge_comm
   unfolding h_def c_def morph_comp_def
   apply auto
   by (smt (verit, del_insts) Inl_inject Inr_Inl_False image_iff)
@@ -351,7 +351,7 @@ proof -
     \<open>\<forall>v\<in>V\<^bsub>K\<^esub>. \<^bsub>pb.b \<circ>\<^sub>\<rightarrow> u\<^esub>\<^sub>V v = \<^bsub>b\<^esub>\<^sub>V v\<close> \<open>\<forall>e\<in>E\<^bsub>K\<^esub>. \<^bsub>pb.b \<circ>\<^sub>\<rightarrow> u\<^esub>\<^sub>E e = \<^bsub>b\<^esub>\<^sub>E e\<close>
     \<open>\<forall>v\<in>V\<^bsub>K\<^esub>. \<^bsub>pb.c \<circ>\<^sub>\<rightarrow> u\<^esub>\<^sub>V v = \<^bsub>d\<^esub>\<^sub>V v\<close> \<open>\<forall>e\<in>E\<^bsub>K\<^esub>. \<^bsub>pb.c \<circ>\<^sub>\<rightarrow> u\<^esub>\<^sub>E e = \<^bsub>d\<^esub>\<^sub>E e\<close>
     using pb.pb.universal_property_exist_gen[OF d.G.graph_axioms d.morphism_axioms r.morphism_axioms
-        po.node_commutativity po.edge_commutativity]
+        po.node_comm po.edge_comm]
     by fast
 
   interpret morphism K pb.A u
@@ -375,18 +375,18 @@ proof -
       show \<open>\<exists>v'\<in>V\<^bsub>K\<^esub>. \<^bsub>u\<^esub>\<^sub>V v' = v\<close> if \<open>v \<in> V\<^bsub>pb.A\<^esub>\<close> for v
       proof -
         have *: \<open>\<^bsub>h \<circ>\<^sub>\<rightarrow> pb.b\<^esub>\<^sub>V v = \<^bsub>c \<circ>\<^sub>\<rightarrow> pb.c\<^esub>\<^sub>V v\<close>
-          using that pb.pb.node_commutativity by blast
+          using that pb.pb.node_comm by blast
 
         obtain z where \<open>z \<in> V\<^bsub>K\<^esub>\<close> 
           and \<open>\<^bsub>b\<^esub>\<^sub>V z = \<^bsub>pb.b\<^esub>\<^sub>V v\<close> 
           and \<open>\<^bsub>d\<^esub>\<^sub>V z = \<^bsub>pb.c\<^esub>\<^sub>V v\<close> 
-          using r.inj_nodes * po.node_commutativity \<open>v \<in> V\<^bsub>pb.A\<^esub>\<close> 
+          using r.inj_nodes * po.node_comm \<open>v \<in> V\<^bsub>pb.A\<^esub>\<close> 
             reduced_chain_condition_nodes
             d.inj_nodes d.morph_node_range inc_h.inj_nodes r.morph_node_range
           by (auto simp add: morph_comp_def pb.A_def pb.b_def pb.c_def) (metis inj_onD)
 
         have \<open>\<^bsub>u\<^esub>\<^sub>V z = v\<close>
-          using  pb.pb.node_commutativity
+          using  pb.pb.node_comm
             \<open>\<^bsub>b\<^esub>\<^sub>V z = \<^bsub>pb.b\<^esub>\<^sub>V v\<close>  \<open>\<^bsub>d\<^esub>\<^sub>V z = \<^bsub>pb.c\<^esub>\<^sub>V v\<close>
             \<open>v \<in> V\<^bsub>pb.A\<^esub>\<close> \<open>z \<in> V\<^bsub>K\<^esub>\<close>
             \<open>\<forall>v\<in>V\<^bsub>K\<^esub>. \<^bsub>pb.b \<circ>\<^sub>\<rightarrow> u\<^esub>\<^sub>V v = \<^bsub>b\<^esub>\<^sub>V v\<close> 
@@ -401,18 +401,18 @@ proof -
       show \<open>\<exists>e'\<in>E\<^bsub>K\<^esub>. \<^bsub>u\<^esub>\<^sub>E e' = e \<close> if \<open>e \<in> E\<^bsub>pb.A\<^esub>\<close> for e
       proof -
         have *: \<open>\<^bsub>h \<circ>\<^sub>\<rightarrow> pb.b\<^esub>\<^sub>E e = \<^bsub>c \<circ>\<^sub>\<rightarrow> pb.c\<^esub>\<^sub>E e\<close>
-          using that pb.pb.edge_commutativity by blast
+          using that pb.pb.edge_comm by blast
 
         obtain z where \<open>z \<in> E\<^bsub>K\<^esub>\<close> 
           and \<open>\<^bsub>b\<^esub>\<^sub>E z = \<^bsub>pb.b\<^esub>\<^sub>E e\<close> 
           and \<open>\<^bsub>d\<^esub>\<^sub>E z = \<^bsub>pb.c\<^esub>\<^sub>E e\<close> 
-          using r.inj_edges * po.edge_commutativity \<open>e \<in> E\<^bsub>pb.A\<^esub>\<close> 
+          using r.inj_edges * po.edge_comm \<open>e \<in> E\<^bsub>pb.A\<^esub>\<close> 
             reduced_chain_condition_edges
             d.inj_edges d.morph_edge_range inc_h.inj_edges r.morph_edge_range
           by (auto simp add: morph_comp_def pb.A_def pb.b_def pb.c_def) (metis inj_onD)
 
         have \<open>\<^bsub>u\<^esub>\<^sub>E z = e\<close>
-          using  pb.pb.edge_commutativity
+          using  pb.pb.edge_comm
             \<open>\<^bsub>b\<^esub>\<^sub>E z = \<^bsub>pb.b\<^esub>\<^sub>E e\<close>  \<open>\<^bsub>d\<^esub>\<^sub>E z = \<^bsub>pb.c\<^esub>\<^sub>E e\<close>
             \<open>e \<in> E\<^bsub>pb.A\<^esub>\<close> \<open>z \<in> E\<^bsub>K\<^esub>\<close>
             \<open>\<forall>e\<in>E\<^bsub>K\<^esub>. \<^bsub>pb.b \<circ>\<^sub>\<rightarrow> u\<^esub>\<^sub>E e = \<^bsub>b\<^esub>\<^sub>E e\<close> 
@@ -558,7 +558,7 @@ proof -
   obtain u where \<open>morphism A pb.A u\<close>
     \<open>\<forall>v\<in>V\<^bsub>A\<^esub>. \<^bsub>pb.b \<circ>\<^sub>\<rightarrow> u\<^esub>\<^sub>V v = \<^bsub>b\<^esub>\<^sub>V v\<close> \<open>\<forall>e\<in>E\<^bsub>A\<^esub>. \<^bsub>pb.b \<circ>\<^sub>\<rightarrow> u\<^esub>\<^sub>E e = \<^bsub>b\<^esub>\<^sub>E e\<close>
     \<open>\<forall>v\<in>V\<^bsub>A\<^esub>. \<^bsub>pb.c \<circ>\<^sub>\<rightarrow> u\<^esub>\<^sub>V v = \<^bsub>c\<^esub>\<^sub>V v\<close> \<open>\<forall>e\<in>E\<^bsub>A\<^esub>. \<^bsub>pb.c \<circ>\<^sub>\<rightarrow> u\<^esub>\<^sub>E e = \<^bsub>c\<^esub>\<^sub>E e\<close>
-  using pb.pb.universal_property_exist_gen[OF b.G.graph_axioms c.morphism_axioms b.morphism_axioms node_commutativity edge_commutativity]
+  using pb.pb.universal_property_exist_gen[OF b.G.graph_axioms c.morphism_axioms b.morphism_axioms node_comm edge_comm]
   by fast
 
   interpret morphism A pb.A u
@@ -582,18 +582,18 @@ proof -
       show \<open>\<exists>v'\<in>V\<^bsub>A\<^esub>. \<^bsub>u\<^esub>\<^sub>V v' = v\<close> if \<open>v \<in> V\<^bsub>pb.A\<^esub>\<close> for v
       proof -
         have *: \<open>\<^bsub>f \<circ>\<^sub>\<rightarrow> pb.b\<^esub>\<^sub>V v = \<^bsub>g \<circ>\<^sub>\<rightarrow> pb.c\<^esub>\<^sub>V v\<close>
-          by (simp add:that pb.pb.node_commutativity)
+          by (simp add:that pb.pb.node_comm)
 
         obtain z where \<open>z \<in> V\<^bsub>A\<^esub>\<close>
           and \<open>\<^bsub>b\<^esub>\<^sub>V z = \<^bsub>pb.b\<^esub>\<^sub>V v\<close> 
           and \<open>\<^bsub>c\<^esub>\<^sub>V z = \<^bsub>pb.c\<^esub>\<^sub>V v\<close> 
-          using b.inj_nodes * node_commutativity \<open>v \<in> V\<^bsub>pb.A\<^esub>\<close> 
+          using b.inj_nodes * node_comm \<open>v \<in> V\<^bsub>pb.A\<^esub>\<close> 
             reduced_chain_condition_nodes[OF b c] g.inj_nodes c.morph_node_range
           by (auto simp add: morph_comp_def pb.A_def pb.b_def pb.c_def) (metis inj_onD)
     
 
         have \<open>\<^bsub>u\<^esub>\<^sub>V z = v\<close>
-          using  pb.pb.node_commutativity
+          using  pb.pb.node_comm
             \<open>\<^bsub>b\<^esub>\<^sub>V z = \<^bsub>pb.b\<^esub>\<^sub>V v\<close>  \<open>\<^bsub>c\<^esub>\<^sub>V z = \<^bsub>pb.c\<^esub>\<^sub>V v\<close>
             \<open>v \<in> V\<^bsub>pb.A\<^esub>\<close> \<open>z \<in> V\<^bsub>A\<^esub>\<close>
             \<open>\<forall>v\<in>V\<^bsub>A\<^esub>. \<^bsub>pb.b \<circ>\<^sub>\<rightarrow> u\<^esub>\<^sub>V v = \<^bsub>b\<^esub>\<^sub>V v\<close> 
@@ -608,18 +608,18 @@ proof -
       show \<open>\<exists>e'\<in>E\<^bsub>A\<^esub>. \<^bsub>u\<^esub>\<^sub>E e' = e \<close> if \<open>e \<in> E\<^bsub>pb.A\<^esub>\<close> for e
       proof -
         have *: \<open>\<^bsub>f \<circ>\<^sub>\<rightarrow> pb.b\<^esub>\<^sub>E e = \<^bsub>g \<circ>\<^sub>\<rightarrow> pb.c\<^esub>\<^sub>E e\<close>
-          by (simp add:that pb.pb.edge_commutativity)
+          by (simp add:that pb.pb.edge_comm)
         
         obtain z where \<open>z \<in> E\<^bsub>A\<^esub>\<close> 
           and \<open>\<^bsub>b\<^esub>\<^sub>E z = \<^bsub>pb.b\<^esub>\<^sub>E e\<close> 
           and \<open>\<^bsub>c\<^esub>\<^sub>E z = \<^bsub>pb.c\<^esub>\<^sub>E e\<close> 
-          using b.inj_edges * edge_commutativity \<open>e \<in> E\<^bsub>pb.A\<^esub>\<close> 
+          using b.inj_edges * edge_comm \<open>e \<in> E\<^bsub>pb.A\<^esub>\<close> 
             reduced_chain_condition_edges[OF b c] g.inj_edges c.morph_edge_range
           by (auto simp add: morph_comp_def pb.A_def pb.b_def pb.c_def) (metis inj_onD)
     
 
         have \<open>\<^bsub>u\<^esub>\<^sub>E z = e\<close>
-          using  pb.pb.edge_commutativity
+          using  pb.pb.edge_comm
             \<open>\<^bsub>b\<^esub>\<^sub>E z = \<^bsub>pb.b\<^esub>\<^sub>E e\<close>  \<open>\<^bsub>c\<^esub>\<^sub>E z = \<^bsub>pb.c\<^esub>\<^sub>E e\<close>
             \<open>e \<in> E\<^bsub>pb.A\<^esub>\<close> \<open>z \<in> E\<^bsub>A\<^esub>\<close>
             \<open>\<forall>e\<in>E\<^bsub>A\<^esub>. \<^bsub>pb.b \<circ>\<^sub>\<rightarrow> u\<^esub>\<^sub>E e = \<^bsub>b\<^esub>\<^sub>E e\<close> 
@@ -651,8 +651,8 @@ lemma po_characterization:
     c: \<open>injective_morphism A C c\<close> and
     f: \<open>injective_morphism B D f\<close> and
     g: \<open>injective_morphism C D g\<close> and
-    node_commutativity: \<open>\<And>v. v \<in> V\<^bsub>A\<^esub> \<Longrightarrow> \<^bsub>f \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>V v = \<^bsub>g \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>V v\<close> and
-    edge_commutativity: \<open>\<And>e. e \<in> E\<^bsub>A\<^esub> \<Longrightarrow> \<^bsub>f \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>E e = \<^bsub>g \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>E e\<close> and
+    node_comm: \<open>\<And>v. v \<in> V\<^bsub>A\<^esub> \<Longrightarrow> \<^bsub>f \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>V v = \<^bsub>g \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>V v\<close> and
+    edge_comm: \<open>\<And>e. e \<in> E\<^bsub>A\<^esub> \<Longrightarrow> \<^bsub>f \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>E e = \<^bsub>g \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>E e\<close> and
     reduced_chain_condition_nodes: \<open>\<And>x y. x \<in> V\<^bsub>B\<^esub> \<Longrightarrow> y \<in> V\<^bsub>C\<^esub> \<Longrightarrow> \<^bsub>f\<^esub>\<^sub>V x = \<^bsub>g\<^esub>\<^sub>V y \<Longrightarrow> (\<exists>a \<in> V\<^bsub>A\<^esub>. (\<^bsub>b\<^esub>\<^sub>V a = x \<and> \<^bsub>c\<^esub>\<^sub>V a = y))\<close> and
     reduced_chain_condition_edges: \<open>\<And>x y. x \<in> E\<^bsub>B\<^esub> \<Longrightarrow> y \<in> E\<^bsub>C\<^esub> \<Longrightarrow> \<^bsub>f\<^esub>\<^sub>E x = \<^bsub>g\<^esub>\<^sub>E y \<Longrightarrow> (\<exists>a \<in> E\<^bsub>A\<^esub>. (\<^bsub>b\<^esub>\<^sub>E a = x \<and> \<^bsub>c\<^esub>\<^sub>E a = y))\<close> and
     joint_surjectivity_nodes: \<open>\<And>x. x \<in> V\<^bsub>D\<^esub> \<Longrightarrow> (\<exists>v \<in> V\<^bsub>C\<^esub>. \<^bsub>g\<^esub>\<^sub>V v = x) \<or> (\<exists>v \<in> V\<^bsub>B\<^esub>. \<^bsub>f\<^esub>\<^sub>V v = x)\<close> and
@@ -671,7 +671,7 @@ proof -
   obtain u where \<open>morphism constr.H D u\<close>
        \<open>\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> constr.h\<^esub>\<^sub>V v = \<^bsub>f\<^esub>\<^sub>V v\<close> \<open>\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> constr.h\<^esub>\<^sub>E e = \<^bsub>f\<^esub>\<^sub>E e\<close>
        \<open>\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> constr.c\<^esub>\<^sub>V v = \<^bsub>g\<^esub>\<^sub>V v\<close> \<open>\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> constr.c\<^esub>\<^sub>E e = \<^bsub>g\<^esub>\<^sub>E e\<close>
-    using constr.po.universal_property_exist_gen edge_commutativity f.H.graph_axioms f.morphism_axioms g.morphism_axioms node_commutativity by blast
+    using constr.po.universal_property_exist_gen edge_comm f.H.graph_axioms f.morphism_axioms g.morphism_axioms node_comm by blast
 
   interpret morphism constr.H D u
     using \<open>morphism constr.H D u\<close> by assumption
@@ -763,11 +763,11 @@ proof
     interpret h: morphism A fr.A h
     proof
       show \<open>\<^bsub>h\<^esub>\<^sub>E e \<in> E\<^bsub>fr.A\<^esub>\<close> if \<open>e \<in> E\<^bsub>A\<^esub>\<close> for e
-        using that fr.pb.edge_commutativity c.morph_edge_range edge_commutativity po2.edge_commutativity po2.c.morph_edge_range
+        using that fr.pb.edge_comm c.morph_edge_range edge_comm po2.edge_comm po2.c.morph_edge_range
         by (simp add: fr.A_def h_def fr.b_def morph_comp_def fr.c_def)
     next
       show \<open>\<^bsub>h\<^esub>\<^sub>V v \<in> V\<^bsub>fr.A\<^esub>\<close> if \<open>v \<in> V\<^bsub>A\<^esub>\<close> for v
-        using that fr.pb.node_commutativity c.morph_node_range node_commutativity po2.node_commutativity po2.c.morph_node_range
+        using that fr.pb.node_comm c.morph_node_range node_comm po2.node_comm po2.c.morph_node_range
         by (simp add: fr.A_def h_def fr.b_def morph_comp_def fr.c_def)
     next
       show \<open>\<^bsub>h\<^esub>\<^sub>V (s\<^bsub>A\<^esub> e) = s\<^bsub>fr.A\<^esub> (\<^bsub>h\<^esub>\<^sub>E e)\<close> if \<open>e \<in> E\<^bsub>A\<^esub>\<close> for e
@@ -799,7 +799,7 @@ proof
 
 (* bottom square commutes is assumption *)
     have \<open>\<^bsub>f \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>V v = \<^bsub>g \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>A\<^esub>\<close> for v
-      using node_commutativity that by blast
+      using node_comm that by blast
 
 
     have *: \<open>c' \<circ>\<^sub>\<rightarrow> idM = fr.c \<circ>\<^sub>\<rightarrow> h\<close>
@@ -817,11 +817,11 @@ proof
       show \<open>pullback_diagram_axioms A C' A (fr.c \<circ>\<^sub>\<rightarrow> h) idM g' (g \<circ>\<^sub>\<rightarrow> c)\<close>
       proof
         show \<open>\<^bsub>g' \<circ>\<^sub>\<rightarrow> (fr.c \<circ>\<^sub>\<rightarrow> h)\<^esub>\<^sub>V v = \<^bsub>g \<circ>\<^sub>\<rightarrow> c \<circ>\<^sub>\<rightarrow> idM\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>A\<^esub>\<close> for v
-          using that backside.node_commutativity node_commutativity
+          using that backside.node_comm node_comm
           by (simp add: morph_assoc_nodes fr.c_def morph_comp_def h_def)
       next
         show \<open>\<^bsub>g' \<circ>\<^sub>\<rightarrow> (fr.c \<circ>\<^sub>\<rightarrow> h)\<^esub>\<^sub>E e = \<^bsub>g \<circ>\<^sub>\<rightarrow> c \<circ>\<^sub>\<rightarrow> idM\<^esub>\<^sub>E e\<close> if \<open>e \<in> E\<^bsub>A\<^esub>\<close> for e
-          using that backside.edge_commutativity edge_commutativity
+          using that backside.edge_comm edge_comm
           by (simp add: morph_assoc_nodes fr.c_def morph_comp_def h_def)
       next
         show \<open>Ex1M
@@ -838,12 +838,12 @@ proof
             using \<open>morphism A' A c'\<close> by assumption
 
           have \<open>\<^bsub>g' \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>V v = \<^bsub>f \<circ>\<^sub>\<rightarrow> b \<circ>\<^sub>\<rightarrow> c'\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>A'\<^esub>\<close> for v
-            using that \<open>\<And>v. v \<in> V\<^bsub>A'\<^esub> \<Longrightarrow> \<^bsub>g' \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>V v = \<^bsub>g \<circ>\<^sub>\<rightarrow> c \<circ>\<^sub>\<rightarrow> c'\<^esub>\<^sub>V v\<close> backside.node_commutativity
+            using that \<open>\<And>v. v \<in> V\<^bsub>A'\<^esub> \<Longrightarrow> \<^bsub>g' \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>V v = \<^bsub>g \<circ>\<^sub>\<rightarrow> c \<circ>\<^sub>\<rightarrow> c'\<^esub>\<^sub>V v\<close> backside.node_comm
               c'.morph_node_range h.morph_node_range
             by (simp add: morph_comp_def h_def fr.A_def)
 
           moreover have \<open>\<^bsub>g' \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>E e = \<^bsub>f \<circ>\<^sub>\<rightarrow> b \<circ>\<^sub>\<rightarrow> c'\<^esub>\<^sub>E e\<close> if \<open>e \<in> E\<^bsub>A'\<^esub>\<close> for e
-            using that \<open>\<And>e. e \<in> E\<^bsub>A'\<^esub> \<Longrightarrow> \<^bsub>g' \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>E e = \<^bsub>g \<circ>\<^sub>\<rightarrow> c \<circ>\<^sub>\<rightarrow> c'\<^esub>\<^sub>E e\<close> backside.edge_commutativity
+            using that \<open>\<And>e. e \<in> E\<^bsub>A'\<^esub> \<Longrightarrow> \<^bsub>g' \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>E e = \<^bsub>g \<circ>\<^sub>\<rightarrow> c \<circ>\<^sub>\<rightarrow> c'\<^esub>\<^sub>E e\<close> backside.edge_comm
               c'.morph_edge_range h.morph_edge_range
             by (simp add: morph_comp_def h_def fr.A_def)
 
@@ -901,11 +901,11 @@ proof
         show \<open>pullback_diagram_axioms A C A (fr.b \<circ>\<^sub>\<rightarrow> h) idM g (g' \<circ>\<^sub>\<rightarrow> c')\<close>
         proof
           show \<open>\<^bsub>g \<circ>\<^sub>\<rightarrow> (fr.b \<circ>\<^sub>\<rightarrow> h)\<^esub>\<^sub>V v = \<^bsub>g' \<circ>\<^sub>\<rightarrow> c' \<circ>\<^sub>\<rightarrow> idM\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>A\<^esub>\<close> for v
-            using that po2.node_commutativity bls.node_commutativity
+            using that po2.node_comm bls.node_comm
             by (simp add: morph_comp_def morph_assoc_nodes fr.b_def h_def)
         next
           show \<open>\<^bsub>g \<circ>\<^sub>\<rightarrow> (fr.b \<circ>\<^sub>\<rightarrow> h)\<^esub>\<^sub>E e = \<^bsub>g' \<circ>\<^sub>\<rightarrow> c' \<circ>\<^sub>\<rightarrow> idM\<^esub>\<^sub>E e\<close> if \<open>e \<in> E\<^bsub>A\<^esub>\<close> for e
-            using that po2.edge_commutativity bls.edge_commutativity
+            using that po2.edge_comm bls.edge_comm
             by (simp add: morph_comp_def morph_assoc_nodes fr.b_def h_def)
         next
           show \<open>Ex1M (\<lambda>x. morphism A' A x 
@@ -925,11 +925,11 @@ proof
               using \<open>morphism A' C b'\<close> by assumption
 
             have a: \<open>\<^bsub>g \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>V v = \<^bsub>f \<circ>\<^sub>\<rightarrow> b \<circ>\<^sub>\<rightarrow> c'a\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>A'\<^esub>\<close> for v
-              using that \<open>\<And>v. v \<in> V\<^bsub>A'\<^esub> \<Longrightarrow> \<^bsub>g \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>V v = \<^bsub>g' \<circ>\<^sub>\<rightarrow> c' \<circ>\<^sub>\<rightarrow> c'a\<^esub>\<^sub>V v\<close> po2.node_commutativity
+              using that \<open>\<And>v. v \<in> V\<^bsub>A'\<^esub> \<Longrightarrow> \<^bsub>g \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>V v = \<^bsub>g' \<circ>\<^sub>\<rightarrow> c' \<circ>\<^sub>\<rightarrow> c'a\<^esub>\<^sub>V v\<close> po2.node_comm
               by (simp add: morph_comp_def  c'a.morph_node_range)
 
             have b: \<open>\<^bsub>g \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>E e = \<^bsub>f \<circ>\<^sub>\<rightarrow> b \<circ>\<^sub>\<rightarrow> c'a\<^esub>\<^sub>E e\<close> if \<open>e \<in> E\<^bsub>A'\<^esub>\<close> for e
-              using that  \<open>\<And>ea. ea \<in> E\<^bsub>A'\<^esub> \<Longrightarrow> \<^bsub>g \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>E ea = \<^bsub>g' \<circ>\<^sub>\<rightarrow> c' \<circ>\<^sub>\<rightarrow> c'a\<^esub>\<^sub>E ea\<close> po2.edge_commutativity
+              using that  \<open>\<And>ea. ea \<in> E\<^bsub>A'\<^esub> \<Longrightarrow> \<^bsub>g \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>E ea = \<^bsub>g' \<circ>\<^sub>\<rightarrow> c' \<circ>\<^sub>\<rightarrow> c'a\<^esub>\<^sub>E ea\<close> po2.edge_comm
               by (simp add: morph_comp_def  c'a.morph_edge_range)
             
             have s: \<open>(\<lambda>x. morphism A' A x \<and> (\<forall>v\<in>V\<^bsub>A'\<^esub>. \<^bsub>c \<circ>\<^sub>\<rightarrow> idM \<circ>\<^sub>\<rightarrow> x\<^esub>\<^sub>V v = \<^bsub>b'\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>A'\<^esub>. \<^bsub>c \<circ>\<^sub>\<rightarrow> idM \<circ>\<^sub>\<rightarrow> x\<^esub>\<^sub>E e = \<^bsub>b'\<^esub>\<^sub>E e) \<and> (\<forall>v\<in>V\<^bsub>A'\<^esub>. \<^bsub>idM \<circ>\<^sub>\<rightarrow> x\<^esub>\<^sub>V v = \<^bsub>c'a\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>A'\<^esub>. \<^bsub>idM \<circ>\<^sub>\<rightarrow> x\<^esub>\<^sub>E e = \<^bsub>c'a\<^esub>\<^sub>E e)) = (\<lambda>x. morphism A' A x \<and> (\<forall>v\<in>V\<^bsub>A'\<^esub>. \<^bsub>fr.b \<circ>\<^sub>\<rightarrow> h \<circ>\<^sub>\<rightarrow> x\<^esub>\<^sub>V v = \<^bsub>b'\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>A'\<^esub>. \<^bsub>fr.b \<circ>\<^sub>\<rightarrow> h \<circ>\<^sub>\<rightarrow> x\<^esub>\<^sub>E e = \<^bsub>b'\<^esub>\<^sub>E e) \<and> (\<forall>v\<in>V\<^bsub>A'\<^esub>. \<^bsub>idM \<circ>\<^sub>\<rightarrow> x\<^esub>\<^sub>V v = \<^bsub>c'a\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>A'\<^esub>. \<^bsub>idM \<circ>\<^sub>\<rightarrow> x\<^esub>\<^sub>E e = \<^bsub>c'a\<^esub>\<^sub>E e))\<close>
@@ -978,7 +978,7 @@ proof
 
       show \<open>pushout_diagram A A fr.A C' idM h c' fr.c\<close>
         using po_characterization[of A A idM fr.A h C' c' fr.c]
-        using a' b' b.G.idm.injective_morphism_axioms c' h.injective_morphism_axioms k_inj.injective_morphism_axioms top_pb.edge_commutativity top_pb.node_commutativity top_pb.reduced_chain_condition_edges top_pb.reduced_chain_condition_nodes by fastforce
+        using a' b' b.G.idm.injective_morphism_axioms c' h.injective_morphism_axioms k_inj.injective_morphism_axioms top_pb.edge_comm top_pb.node_comm top_pb.reduced_chain_condition_edges top_pb.reduced_chain_condition_nodes by fastforce
     qed
 
 
@@ -1010,7 +1010,7 @@ proof
 
       show \<open>pushout_diagram A fr.A A C h idM fr.b c\<close>
         using po_characterization[ OF back_right.g_inj_imp_b_inj[OF c] b.G.idm.injective_morphism_axioms h.injective_morphism_axioms
-            c back_right.node_commutativity back_right.edge_commutativity]
+            c back_right.node_comm back_right.edge_comm]
         using back_right.reduced_chain_condition_nodes back_right.reduced_chain_condition_edges
         using cc dd by blast
           

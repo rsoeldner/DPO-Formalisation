@@ -4,12 +4,16 @@ begin
 
 
 (* GRAT PDF P. 114 *)
+text_raw \<open>\DefineSnippet{dd-po}{\<close>
 locale direct_derivation = 
   r: rule r b b' +
   gi: injective_morphism "lhs r" G g  + 
   po1: pushout_diagram "interf r" "lhs r" D G b d g c +
   po2: pushout_diagram "interf r" "rhs r" D H b' d f c'
   for r b b' G g D d c H f c'
+text_raw \<open>}%EndSnippet\<close>
+
+context direct_derivation
 begin
 
   sublocale d_inj: injective_morphism "interf r" D d
@@ -76,12 +80,12 @@ interpret backside: pullback_diagram "interf r" D' "interf r" G
     interpret h: morphism "interf r" fr.A h
     proof
       show \<open>\<^bsub>h\<^esub>\<^sub>E e \<in> E\<^bsub>fr.A\<^esub>\<close> if \<open>e \<in> E\<^bsub>interf r\<^esub>\<close> for e
-        using that fr.pb.edge_commutativity po1.c.morph_edge_range po1.edge_commutativity 
-              dd2.po1.edge_commutativity dd2.po1.c.morph_edge_range
+        using that fr.pb.edge_comm po1.c.morph_edge_range po1.edge_comm 
+              dd2.po1.edge_comm dd2.po1.c.morph_edge_range
         by(simp add: fr.A_def h_def fr.b_def morph_comp_def fr.c_def)
     next
       show \<open>\<^bsub>h\<^esub>\<^sub>V v \<in> V\<^bsub>fr.A\<^esub>\<close> if \<open>v \<in> V\<^bsub>interf r\<^esub>\<close> for v
-        using that fr.pb.node_commutativity po1.c.morph_node_range po1.node_commutativity dd2.po1.node_commutativity dd2.po1.c.morph_node_range
+        using that fr.pb.node_comm po1.c.morph_node_range po1.node_comm dd2.po1.node_comm dd2.po1.c.morph_node_range
         by (simp add: fr.A_def h_def fr.b_def morph_comp_def fr.c_def)
     next
       show \<open>\<^bsub>h\<^esub>\<^sub>V (s\<^bsub>interf r\<^esub> e) = s\<^bsub>fr.A\<^esub> (\<^bsub>h\<^esub>\<^sub>E e)\<close> if \<open>e \<in> E\<^bsub>interf r\<^esub>\<close> for e
@@ -112,7 +116,7 @@ interpret backside: pullback_diagram "interf r" D' "interf r" G
       by (simp add: h_def fr.c_def morph_comp_def)
 (* bottom square commutes is assumption *)
     have \<open>\<^bsub>g \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>V v = \<^bsub>c \<circ>\<^sub>\<rightarrow> d\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>interf r\<^esub>\<close> for v
-      using po1.node_commutativity that by blast
+      using po1.node_comm that by blast
     have *: \<open>d' \<circ>\<^sub>\<rightarrow> idM = fr.c \<circ>\<^sub>\<rightarrow> h\<close>
       by (simp add: h_def fr.c_def morph_comp_def comp_def)
 
@@ -127,11 +131,11 @@ interpret backside: pullback_diagram "interf r" D' "interf r" G
       show \<open>pullback_diagram_axioms (interf r) D' (interf r) (fr.c \<circ>\<^sub>\<rightarrow> h) idM m (c \<circ>\<^sub>\<rightarrow> d)\<close>
       proof
         show \<open>\<^bsub>m \<circ>\<^sub>\<rightarrow> (fr.c \<circ>\<^sub>\<rightarrow> h)\<^esub>\<^sub>V v = \<^bsub>c \<circ>\<^sub>\<rightarrow> d \<circ>\<^sub>\<rightarrow> idM\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>interf r\<^esub>\<close> for v
-          using that backside.node_commutativity po1.node_commutativity
+          using that backside.node_comm po1.node_comm
           by (simp add: morph_assoc_nodes fr.c_def morph_comp_def h_def)
       next
         show \<open>\<^bsub>m \<circ>\<^sub>\<rightarrow> (fr.c \<circ>\<^sub>\<rightarrow> h)\<^esub>\<^sub>E e = \<^bsub>c \<circ>\<^sub>\<rightarrow> d \<circ>\<^sub>\<rightarrow> idM\<^esub>\<^sub>E e\<close> if \<open>e \<in> E\<^bsub>interf r\<^esub>\<close> for e
-          using that backside.edge_commutativity po1.edge_commutativity
+          using that backside.edge_comm po1.edge_comm
           by (simp add: morph_assoc_nodes fr.c_def morph_comp_def h_def)
       next
         show \<open>Ex1M
@@ -148,12 +152,12 @@ interpret backside: pullback_diagram "interf r" D' "interf r" G
             using \<open>morphism A' (interf r) c'\<close> by assumption
 
           have \<open>\<^bsub>m \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>V v = \<^bsub>g \<circ>\<^sub>\<rightarrow> b \<circ>\<^sub>\<rightarrow> c'\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>A'\<^esub>\<close> for v
-            using that \<open>\<And>v. v \<in> V\<^bsub>A'\<^esub> \<Longrightarrow> \<^bsub>m \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>V v = \<^bsub>c \<circ>\<^sub>\<rightarrow> d \<circ>\<^sub>\<rightarrow> c'\<^esub>\<^sub>V v\<close> backside.node_commutativity
+            using that \<open>\<And>v. v \<in> V\<^bsub>A'\<^esub> \<Longrightarrow> \<^bsub>m \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>V v = \<^bsub>c \<circ>\<^sub>\<rightarrow> d \<circ>\<^sub>\<rightarrow> c'\<^esub>\<^sub>V v\<close> backside.node_comm
               c'.morph_node_range h.morph_node_range
             by (simp add: morph_comp_def h_def fr.A_def)
 
           moreover have \<open>\<^bsub>m \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>E e = \<^bsub>g \<circ>\<^sub>\<rightarrow> b \<circ>\<^sub>\<rightarrow> c'\<^esub>\<^sub>E e\<close> if \<open>e \<in> E\<^bsub>A'\<^esub>\<close> for e
-            using that \<open>\<And>e. e \<in> E\<^bsub>A'\<^esub> \<Longrightarrow> \<^bsub>m \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>E e = \<^bsub>c \<circ>\<^sub>\<rightarrow> d \<circ>\<^sub>\<rightarrow> c'\<^esub>\<^sub>E e\<close> backside.edge_commutativity
+            using that \<open>\<And>e. e \<in> E\<^bsub>A'\<^esub> \<Longrightarrow> \<^bsub>m \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>E e = \<^bsub>c \<circ>\<^sub>\<rightarrow> d \<circ>\<^sub>\<rightarrow> c'\<^esub>\<^sub>E e\<close> backside.edge_comm
               c'.morph_edge_range h.morph_edge_range
             by (simp add: morph_comp_def h_def fr.A_def)
 
@@ -210,11 +214,11 @@ interpret backside: pullback_diagram "interf r" D' "interf r" G
         show \<open>pullback_diagram_axioms (interf r) D (interf r) (fr.b \<circ>\<^sub>\<rightarrow> h) idM c (m \<circ>\<^sub>\<rightarrow> d')\<close>
         proof
           show \<open>\<^bsub>c \<circ>\<^sub>\<rightarrow> (fr.b \<circ>\<^sub>\<rightarrow> h)\<^esub>\<^sub>V v = \<^bsub>m \<circ>\<^sub>\<rightarrow> d' \<circ>\<^sub>\<rightarrow> idM\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>interf r\<^esub>\<close> for v
-            using that dd2.po1.node_commutativity bls.node_commutativity
+            using that dd2.po1.node_comm bls.node_comm
             by (simp add: morph_comp_def morph_assoc_nodes fr.b_def h_def)
         next
           show \<open>\<^bsub>c \<circ>\<^sub>\<rightarrow> (fr.b \<circ>\<^sub>\<rightarrow> h)\<^esub>\<^sub>E e = \<^bsub>m \<circ>\<^sub>\<rightarrow> d' \<circ>\<^sub>\<rightarrow> idM\<^esub>\<^sub>E e\<close> if \<open>e \<in> E\<^bsub>interf r\<^esub>\<close> for e
-            using that dd2.po1.edge_commutativity bls.edge_commutativity
+            using that dd2.po1.edge_comm bls.edge_comm
             by (simp add: morph_comp_def morph_assoc_nodes fr.b_def h_def)
         next
           show \<open>Ex1M (\<lambda>x. morphism A' (interf r) x 
@@ -234,11 +238,11 @@ interpret backside: pullback_diagram "interf r" D' "interf r" G
               using \<open>morphism A' D b'\<close> by assumption
 
             have a: \<open>\<^bsub>c \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>V v = \<^bsub>g \<circ>\<^sub>\<rightarrow> b \<circ>\<^sub>\<rightarrow> c'a\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>A'\<^esub>\<close> for v
-              using that \<open>\<And>v. v \<in> V\<^bsub>A'\<^esub> \<Longrightarrow> \<^bsub>c \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>V v = \<^bsub>m \<circ>\<^sub>\<rightarrow> d' \<circ>\<^sub>\<rightarrow> c'a\<^esub>\<^sub>V v\<close> dd2.po1.node_commutativity
+              using that \<open>\<And>v. v \<in> V\<^bsub>A'\<^esub> \<Longrightarrow> \<^bsub>c \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>V v = \<^bsub>m \<circ>\<^sub>\<rightarrow> d' \<circ>\<^sub>\<rightarrow> c'a\<^esub>\<^sub>V v\<close> dd2.po1.node_comm
               by (simp add: morph_comp_def c'a.morph_node_range)
 
             have b: \<open>\<^bsub>c \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>E e = \<^bsub>g \<circ>\<^sub>\<rightarrow> b \<circ>\<^sub>\<rightarrow> c'a\<^esub>\<^sub>E e\<close> if \<open>e \<in> E\<^bsub>A'\<^esub>\<close> for e
-              using that  \<open>\<And>ea. ea \<in> E\<^bsub>A'\<^esub> \<Longrightarrow> \<^bsub>c \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>E ea = \<^bsub>m \<circ>\<^sub>\<rightarrow> d' \<circ>\<^sub>\<rightarrow> c'a\<^esub>\<^sub>E ea\<close> dd2.po1.edge_commutativity
+              using that  \<open>\<And>ea. ea \<in> E\<^bsub>A'\<^esub> \<Longrightarrow> \<^bsub>c \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>E ea = \<^bsub>m \<circ>\<^sub>\<rightarrow> d' \<circ>\<^sub>\<rightarrow> c'a\<^esub>\<^sub>E ea\<close> dd2.po1.edge_comm
               by (simp add: morph_comp_def c'a.morph_edge_range)
             
             have s: \<open>(\<lambda>x. morphism A' (interf r) x \<and> (\<forall>v\<in>V\<^bsub>A'\<^esub>. \<^bsub>d \<circ>\<^sub>\<rightarrow> idM \<circ>\<^sub>\<rightarrow> x\<^esub>\<^sub>V v = \<^bsub>b'\<^esub>\<^sub>V v) 
@@ -294,7 +298,7 @@ interpret backside: pullback_diagram "interf r" D' "interf r" G
         using po_characterization[of "interf r" "interf r" idM fr.A h D' d' fr.c]
         using a' b' r.k.G.idm.injective_morphism_axioms dd2.d_inj.injective_morphism_axioms 
           h.injective_morphism_axioms k_inj.injective_morphism_axioms 
-          top_pb.edge_commutativity top_pb.node_commutativity top_pb.reduced_chain_condition_edges
+          top_pb.edge_comm top_pb.node_comm top_pb.reduced_chain_condition_edges
           top_pb.reduced_chain_condition_nodes 
         by fastforce
     qed
@@ -342,7 +346,7 @@ interpret k_bij: bijective_morphism fr.A D' fr.c
       show \<open>pushout_diagram (interf r) fr.A (interf r) D h idM fr.b d\<close>
         using po_characterization[
             OF back_right.g_inj_imp_b_inj[OF d_inj.injective_morphism_axioms] r.k.G.idm.injective_morphism_axioms h.injective_morphism_axioms
-            d_inj.injective_morphism_axioms back_right.node_commutativity back_right.edge_commutativity a b cc dd]
+            d_inj.injective_morphism_axioms back_right.node_comm back_right.edge_comm a b cc dd]
         by blast
     qed
 
@@ -451,7 +455,7 @@ define u where \<open>u \<equiv> fr.c \<circ>\<^sub>\<rightarrow> linv\<close>
 
     have "**a": \<open>\<forall>v\<in>V\<^bsub>interf r\<^esub>. \<^bsub>f' \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>V v = \<^bsub>m' \<circ>\<^sub>\<rightarrow> u \<circ>\<^sub>\<rightarrow> d\<^esub>\<^sub>V v\<close>
                 \<open>\<forall>e\<in>E\<^bsub>interf r\<^esub>. \<^bsub>f' \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>E e = \<^bsub>m' \<circ>\<^sub>\<rightarrow> u \<circ>\<^sub>\<rightarrow> d\<^esub>\<^sub>E e\<close>
-      using aa bb dd2.po2.node_commutativity dd2.po2.edge_commutativity
+      using aa bb dd2.po2.node_comm dd2.po2.edge_comm
       by (simp_all add: morph_comp_def)
       
     obtain u' where u': \<open>morphism H H' u'\<close>
@@ -470,7 +474,7 @@ define u where \<open>u \<equiv> fr.c \<circ>\<^sub>\<rightarrow> linv\<close>
 
       have "**b": \<open>\<forall>v\<in>V\<^bsub>interf r\<^esub>. \<^bsub>f \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>V v = \<^bsub>c' \<circ>\<^sub>\<rightarrow> uinv \<circ>\<^sub>\<rightarrow> d'\<^esub>\<^sub>V v\<close>
            \<open>\<forall>e\<in>E\<^bsub>interf r\<^esub>. \<^bsub>f \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>E e = \<^bsub>c' \<circ>\<^sub>\<rightarrow> uinv \<circ>\<^sub>\<rightarrow> d'\<^esub>\<^sub>E e\<close>
-        using cc dd po2.node_commutativity po2.edge_commutativity
+        using cc dd po2.node_comm po2.edge_comm
         by (simp_all add: morph_comp_def)
 
       obtain u'' where u'': \<open>morphism H' H u''\<close>
@@ -524,9 +528,9 @@ define u where \<open>u \<equiv> fr.c \<circ>\<^sub>\<rightarrow> linv\<close>
         qed
          
         have zz1: \<open>\<forall>v\<in>V\<^bsub>interf r\<^esub>. \<^bsub>f' \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>V v = \<^bsub>m' \<circ>\<^sub>\<rightarrow> d'\<^esub>\<^sub>V v\<close>
-          by (simp add: dd2.po2.node_commutativity)
+          by (simp add: dd2.po2.node_comm)
         have zz2: \<open>\<forall>e\<in>E\<^bsub>interf r\<^esub>. \<^bsub>f' \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>E e = \<^bsub>m' \<circ>\<^sub>\<rightarrow> d'\<^esub>\<^sub>E e\<close>
-          by (simp add: dd2.po2.edge_commutativity)
+          by (simp add: dd2.po2.edge_comm)
         have zz3: \<open> morphism H' H' (u' \<circ>\<^sub>\<rightarrow> u'') \<and> (\<forall>v\<in>V\<^bsub>rhs r\<^esub>. \<^bsub>(u' \<circ>\<^sub>\<rightarrow> u'') \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>V v = \<^bsub>f'\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>rhs r\<^esub>. \<^bsub>(u' \<circ>\<^sub>\<rightarrow> u'') \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>E e = \<^bsub>f'\<^esub>\<^sub>E e) 
 \<and> (\<forall>v\<in>V\<^bsub>D'\<^esub>. \<^bsub>(u' \<circ>\<^sub>\<rightarrow> u'') \<circ>\<^sub>\<rightarrow> m'\<^esub>\<^sub>V v = \<^bsub>m'\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>D'\<^esub>. \<^bsub>(u' \<circ>\<^sub>\<rightarrow> u'') \<circ>\<^sub>\<rightarrow> m'\<^esub>\<^sub>E e = \<^bsub>m'\<^esub>\<^sub>E e)\<close>
           using a'e a'v b'e b'v u' u'' wf_morph_comp by fastforce
@@ -576,11 +580,11 @@ define u where \<open>u \<equiv> fr.c \<circ>\<^sub>\<rightarrow> linv\<close>
         qed
 
         have zz1: \<open>\<forall>v\<in>V\<^bsub>interf r\<^esub>. \<^bsub>f \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>V v = \<^bsub>c' \<circ>\<^sub>\<rightarrow> d\<^esub>\<^sub>V v\<close>
-          using po2.node_commutativity
+          using po2.node_comm
           by blast
 
         have zz2: \<open>\<forall>e\<in>E\<^bsub>interf r\<^esub>. \<^bsub>f \<circ>\<^sub>\<rightarrow> b'\<^esub>\<^sub>E e = \<^bsub>c' \<circ>\<^sub>\<rightarrow> d\<^esub>\<^sub>E e\<close>
-          using po2.edge_commutativity
+          using po2.edge_comm
           by blast
 
         have zz3: \<open>morphism H H (u'' \<circ>\<^sub>\<rightarrow> u') \<and> (\<forall>v\<in>V\<^bsub>rhs r\<^esub>. \<^bsub>(u'' \<circ>\<^sub>\<rightarrow> u') \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>V v = \<^bsub>f\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>rhs r\<^esub>. \<^bsub>(u'' \<circ>\<^sub>\<rightarrow> u') \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>E e = \<^bsub>f\<^esub>\<^sub>E e) \<and> (\<forall>v\<in>V\<^bsub>D\<^esub>. \<^bsub>(u'' \<circ>\<^sub>\<rightarrow> u') \<circ>\<^sub>\<rightarrow> c'\<^esub>\<^sub>V v = \<^bsub>c'\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>D\<^esub>. \<^bsub>(u'' \<circ>\<^sub>\<rightarrow> u') \<circ>\<^sub>\<rightarrow> c'\<^esub>\<^sub>E e = \<^bsub>c'\<^esub>\<^sub>E e)\<close>
@@ -662,12 +666,17 @@ proof -
     using dd1.uniqueness_direct_derivation[OF dd2.direct_derivation_axioms]
     by simp
 qed
-
+text_raw \<open>\DefineSnippet{dd-constr}{\<close>
 locale direct_derivation_construction =
   r: rule r b b' +
   d: deletion "interf r" G "lhs r" g b +
-  g: gluing "interf r" d.D "rhs r" d.d b' for G r b b' g H +
-assumes a: \<open>H = g.H\<close>
+  g: gluing "interf r" d.D "rhs r" d.d b'
+  for G r b b' g H +
+  assumes 
+    a: \<open>H = g.H\<close>
+text_raw \<open>}%EndSnippet\<close>
+
+context direct_derivation_construction
 begin
 
 corollary

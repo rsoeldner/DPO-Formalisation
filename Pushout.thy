@@ -36,14 +36,15 @@ lemma uniq_id_morph:
     identity_morphism.id_nodes
   by metis
 
+text_raw \<open>\DefineSnippet{locale-po}{\<close>
 locale pushout_diagram =
   b: morphism A B b +
   c: morphism A C c +
   f: morphism B D f +
   g: morphism C D g for A B C D b c f g +
 assumes
-  node_commutativity: \<open>v \<in> V\<^bsub>A\<^esub> \<Longrightarrow> \<^bsub>f \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>V v = \<^bsub>g \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>V v\<close> and
-  edge_commutativity: \<open>e \<in> E\<^bsub>A\<^esub> \<Longrightarrow> \<^bsub>f \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>E e = \<^bsub>g \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>E e\<close> and
+  node_comm: \<open>v \<in> V\<^bsub>A\<^esub> \<Longrightarrow> \<^bsub>f \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>V v = \<^bsub>g \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>V v\<close> and
+  edge_comm: \<open>e \<in> E\<^bsub>A\<^esub> \<Longrightarrow> \<^bsub>f \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>E e = \<^bsub>g \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>E e\<close> and
   universal_property: \<open>\<lbrakk>
     graph (D' :: ('c,'d) ngraph); 
     morphism (to_ngraph B) D' x; 
@@ -57,16 +58,18 @@ assumes
             (\<forall>v \<in> V\<^bsub>to_ngraph C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> (to_nmorph g)\<^esub>\<^sub>V v = \<^bsub>y\<^esub>\<^sub>V v) \<and>
             (\<forall>e \<in> E\<^bsub>to_ngraph C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> (to_nmorph g)\<^esub>\<^sub>E e = \<^bsub>y\<^esub>\<^sub>E e))
             (to_ngraph D)\<close>
+text_raw \<open>}%EndSnippet\<close>
+context pushout_diagram
 begin
 
 lemma flip_diagram:
   \<open>pushout_diagram A C B D c b g f\<close>
 proof
   show \<open>\<^bsub>g \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>V v = \<^bsub>f \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>A\<^esub>\<close> for v
-    using node_commutativity[OF that] by simp
+    using node_comm[OF that] by simp
 next
   show \<open>\<^bsub>g \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>E e = \<^bsub>f \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>E e\<close> if \<open>e \<in> E\<^bsub>A\<^esub>\<close> for e
-    using edge_commutativity[OF that] by simp
+    using edge_comm[OF that] by simp
 next
   show \<open>Ex1M
         (\<lambda>xa. morphism (to_ngraph D) D' xa \<and>
@@ -499,7 +502,7 @@ proof (rule ccontr)
           g.source_preserve g.target_preserve g.label_preserve g.mark_preserve)
 
     have tr: \<open>\<forall>v\<in>V\<^bsub>A\<^esub>. \<^bsub>f' \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>V v = \<^bsub>g' \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>V v\<close> \<open>\<forall>e\<in>E\<^bsub>A\<^esub>. \<^bsub>f' \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>E e = \<^bsub>g' \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>E e\<close>
-      using node_commutativity edge_commutativity
+      using node_comm edge_comm
       by (auto simp add: morph_comp_def f'_def g'_def)
 
     have u1: \<open>morphism D D' fd \<and> (\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>fd \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>V v = \<^bsub>f'\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>fd \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>E e = \<^bsub>f'\<^esub>\<^sub>E e) \<and> (\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>fd \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>V v = \<^bsub>g'\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>fd \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>E e = \<^bsub>g'\<^esub>\<^sub>E e)\<close>
@@ -592,7 +595,7 @@ proof (rule ccontr)
           g.source_preserve g.target_preserve g.label_preserve g.mark_preserve)
 
     have tr: \<open>\<forall>v\<in>V\<^bsub>A\<^esub>. \<^bsub>f' \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>V v = \<^bsub>g' \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>V v\<close> \<open>\<forall>e\<in>E\<^bsub>A\<^esub>. \<^bsub>f' \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>E e = \<^bsub>g' \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>E e\<close>
-      using node_commutativity edge_commutativity
+      using node_comm edge_comm
       by (auto simp add: morph_comp_def f'_def g'_def)
 
     have u1: \<open>morphism D D' u1 \<and> (\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>u1 \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>V v = \<^bsub>f'\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>u1 \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>E e = \<^bsub>f'\<^esub>\<^sub>E e) \<and> (\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>u1 \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>V v = \<^bsub>g'\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>u1 \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>E e = \<^bsub>g'\<^esub>\<^sub>E e)\<close>
@@ -714,11 +717,11 @@ proof -
    show ?thesis
    proof
      show \<open>\<exists>v'\<in>V\<^bsub>C\<^esub>. \<^bsub>g\<^esub>\<^sub>V v' = v\<close> if \<open>v \<in> V\<^bsub>D\<^esub>\<close> for v
-       using that node_commutativity b.surj_nodes c.morph_node_range joint_surjectivity_nodes
+       using that node_comm b.surj_nodes c.morph_node_range joint_surjectivity_nodes
        by (force simp add: morph_comp_def)
    next
      show \<open>\<exists>e'\<in>E\<^bsub>C\<^esub>. \<^bsub>g\<^esub>\<^sub>E e' = e\<close> if \<open>e \<in> E\<^bsub>D\<^esub>\<close> for e
-       using that edge_commutativity b.surj_edges c.morph_edge_range joint_surjectivity_edges
+       using that edge_comm b.surj_edges c.morph_edge_range joint_surjectivity_edges
        by (force simp add: morph_comp_def)
    qed
  qed
@@ -761,11 +764,11 @@ proof -
   show ?thesis
   proof
     show \<open>inj_on \<^bsub>c\<^esub>\<^sub>V V\<^bsub>A\<^esub>\<close>
-      using node_commutativity f.inj_nodes b.inj_nodes g.inj_nodes
+      using node_comm f.inj_nodes b.inj_nodes g.inj_nodes
       by (auto simp add: morph_comp_def inj_on_def b.morph_node_range)
   next
     show \<open>inj_on \<^bsub>c\<^esub>\<^sub>E E\<^bsub>A\<^esub>\<close> 
-      using edge_commutativity f.inj_edges b.inj_edges g.inj_edges
+      using edge_comm f.inj_edges b.inj_edges g.inj_edges
       by (auto simp add: morph_comp_def inj_on_def b.morph_edge_range)
   qed
 qed
@@ -792,8 +795,8 @@ proof
       and \<open>\<forall>v \<in> V\<^bsub>B\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>V v = \<^bsub>f'\<^esub>\<^sub>V v\<close> and \<open>\<forall>e \<in> E\<^bsub>B\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>E e = \<^bsub>f'\<^esub>\<^sub>E e\<close>
       and \<open>\<forall>v \<in> V\<^bsub>C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>V v = \<^bsub>g'\<^esub>\<^sub>V v\<close> and \<open>\<forall>e \<in> E\<^bsub>C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>E e = \<^bsub>g'\<^esub>\<^sub>E e\<close>
       using universal_property_exist_gen[of D' f' g']
-        pushout_diagram.edge_commutativity[OF a] 
-        pushout_diagram.node_commutativity[OF a]
+        pushout_diagram.edge_comm[OF a] 
+        pushout_diagram.node_comm[OF a]
         D' f' g'
       by auto
 
@@ -804,7 +807,7 @@ proof
       using f.H.graph_axioms a
       using f.morphism_axioms
       using g.morphism_axioms
-      using edge_commutativity node_commutativity by auto
+      using edge_comm node_comm by auto
 
 \<comment> \<open>u' o u o f = f\<close>
     from \<open>\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>V v = \<^bsub>f'\<^esub>\<^sub>V v\<close> and \<open>\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>u' \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>V v = \<^bsub>f\<^esub>\<^sub>V v\<close>
@@ -849,7 +852,7 @@ proof
         using 
           universal_property_exist_gen[of D f g]
           ex_eq[of \<open>(\<lambda>x. morphism D D x \<and> (\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>V v = \<^bsub>f\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>E e = \<^bsub>f\<^esub>\<^sub>E e) \<and> (\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>V v = \<^bsub>g\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>E e = \<^bsub>g\<^esub>\<^sub>E e))\<close> D \<open>u' \<circ>\<^sub>\<rightarrow> u\<close> idM]
-          edge_commutativity f.H.graph_axioms f.morphism_axioms g.morphism_axioms node_commutativity
+          edge_comm f.H.graph_axioms f.morphism_axioms g.morphism_axioms node_comm
           idm wf_morph_comp[OF \<open>morphism D D' u\<close> \<open>morphism D' D u'\<close>]
         by (simp add: bijective_morphism.axioms(1) calculation(1) calculation(2) calculation(3) calculation(4) identity_morphism_def)
 
@@ -857,7 +860,7 @@ proof
         using 
           universal_property_exist_gen[of D f g]
           ex_eq[of \<open>(\<lambda>x. morphism D D x \<and> (\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>V v = \<^bsub>f\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>E e = \<^bsub>f\<^esub>\<^sub>E e) \<and> (\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>V v = \<^bsub>g\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>E e = \<^bsub>g\<^esub>\<^sub>E e))\<close> D \<open>u' \<circ>\<^sub>\<rightarrow> u\<close> idM]
-          edge_commutativity f.H.graph_axioms f.morphism_axioms g.morphism_axioms node_commutativity
+          edge_comm f.H.graph_axioms f.morphism_axioms g.morphism_axioms node_comm
           idm wf_morph_comp[OF \<open>morphism D D' u\<close> \<open>morphism D' D u'\<close>]
         by (simp add: bijective_morphism.axioms(1) calculation(1) calculation(2) calculation(3) calculation(4) identity_morphism_def)
     qed
@@ -900,7 +903,7 @@ proof
       show \<open>\<forall>v \<in> V\<^bsub>D'\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> u'\<^esub>\<^sub>V v =  \<^bsub>idM\<^esub>\<^sub>V v\<close>
         using 
           pushout_diagram.universal_property_exist_gen[OF a D' \<open>morphism B D' f'\<close> \<open>morphism C D' g'\<close>]
-          pushout_diagram.node_commutativity[OF a] pushout_diagram.edge_commutativity[OF a]
+          pushout_diagram.node_comm[OF a] pushout_diagram.edge_comm[OF a]
           ex_eq[of \<open>(\<lambda>x. morphism D' D' x \<and> (\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>V v = \<^bsub>f'\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>E e = \<^bsub>f'\<^esub>\<^sub>E e) \<and> (\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>V v = \<^bsub>g'\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>E e = \<^bsub>g'\<^esub>\<^sub>E e))\<close> D' \<open>u \<circ>\<^sub>\<rightarrow> u'\<close> idM]
           m idm
         by (simp add: bijective_morphism.axioms(1) calculation(11) calculation(12) calculation(13) calculation(14) identity_morphism_def)
@@ -909,7 +912,7 @@ proof
       show \<open>\<forall>e \<in> E\<^bsub>D'\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> u'\<^esub>\<^sub>E e = \<^bsub>idM\<^esub>\<^sub>E e\<close>
         using 
           pushout_diagram.universal_property_exist_gen[OF a D' \<open>morphism B D' f'\<close> \<open>morphism C D' g'\<close>]
-          pushout_diagram.node_commutativity[OF a] pushout_diagram.edge_commutativity[OF a]
+          pushout_diagram.node_comm[OF a] pushout_diagram.edge_comm[OF a]
           ex_eq[of \<open>(\<lambda>x. morphism D' D' x \<and> (\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>V v = \<^bsub>f'\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>E e = \<^bsub>f'\<^esub>\<^sub>E e) \<and> (\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>V v = \<^bsub>g'\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>E e = \<^bsub>g'\<^esub>\<^sub>E e))\<close> D' \<open>u \<circ>\<^sub>\<rightarrow> u'\<close> idM]
           m idm
         by (simp add: bijective_morphism.axioms(1) calculation(11) calculation(12) calculation(13) calculation(14) identity_morphism_def)
@@ -952,7 +955,7 @@ next
 
         also have \<open>\<dots> = \<^bsub>u \<circ>\<^sub>\<rightarrow> g \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>V v\<close>
           using \<open>\<forall>v \<in> V\<^bsub>C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>V v= \<^bsub>g'\<^esub>\<^sub>V v\<close> that
-          using node_commutativity
+          using node_comm
           by (auto simp: morph_comp_def)
 
         also have \<open>\<dots> = \<^bsub>g' \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>V v\<close>
@@ -976,7 +979,7 @@ next
 
         also have \<open>\<dots> = \<^bsub>u \<circ>\<^sub>\<rightarrow> g \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>E e\<close>
           using \<open>\<forall>e \<in> E\<^bsub>C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>E e= \<^bsub>g'\<^esub>\<^sub>E e\<close> that
-          using edge_commutativity
+          using edge_comm
           by (auto simp: morph_comp_def)
 
         also have \<open>\<dots> = \<^bsub>g' \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>E e\<close>
@@ -1333,13 +1336,17 @@ qed
    Pushout composition
    Fact 2.20 PDF page 41 
  *)
-
+text_raw \<open>\DefineSnippet{po-composition}{\<close>
 lemma pushout_composition:
   assumes
     1: \<open>pushout_diagram A B C D f g g' f'\<close> and
     2: \<open>pushout_diagram B E D F e g' e'' e'\<close>
   shows \<open>pushout_diagram A E C F (e \<circ>\<^sub>\<rightarrow> f) g  e'' (e' \<circ>\<^sub>\<rightarrow> f')\<close>
+(*<*)
 proof -
+(*>*)
+text_raw \<open>}%EndSnippet\<close>
+
   interpret 1: pushout_diagram A B C D f g g' f'
     using 1 by assumption
 
@@ -1357,11 +1364,11 @@ proof -
   show ?thesis
   proof 
     show \<open>\<^bsub>e'' \<circ>\<^sub>\<rightarrow> (e \<circ>\<^sub>\<rightarrow> f)\<^esub>\<^sub>V v = \<^bsub>e' \<circ>\<^sub>\<rightarrow> f' \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>A\<^esub>\<close> for v
-      using that "1.node_commutativity" "2.node_commutativity" "1.b.morph_node_range"
+      using that "1.node_comm" "2.node_comm" "1.b.morph_node_range"
       by(simp add: morph_comp_def)
   next
     show \<open>\<^bsub>e'' \<circ>\<^sub>\<rightarrow> (e \<circ>\<^sub>\<rightarrow> f)\<^esub>\<^sub>E ea = \<^bsub>e' \<circ>\<^sub>\<rightarrow> f' \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>E ea\<close> if \<open>ea \<in> E\<^bsub>A\<^esub>\<close> for ea
-      using that "1.edge_commutativity" "2.edge_commutativity" "1.b.morph_edge_range"
+      using that "1.edge_comm" "2.edge_comm" "1.b.morph_edge_range"
       by(simp add: morph_comp_def)
   next
     show \<open>Ex1M
@@ -1527,7 +1534,7 @@ proof -
         have dc: \<open>\<^bsub>ux \<circ>\<^sub>\<rightarrow> to_nmorph e' \<circ>\<^sub>\<rightarrow> to_nmorph g'\<^esub>\<^sub>V v = \<^bsub>h \<circ>\<^sub>\<rightarrow> to_nmorph e\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>to_ngraph B\<^esub>\<close> for v
         proof -
           have \<open>\<^bsub>ux \<circ>\<^sub>\<rightarrow> to_nmorph e' \<circ>\<^sub>\<rightarrow> to_nmorph g'\<^esub>\<^sub>V v = \<^bsub>ux \<circ>\<^sub>\<rightarrow> to_nmorph e'' \<circ>\<^sub>\<rightarrow> to_nmorph e\<^esub>\<^sub>V v\<close>
-            using "2.node_commutativity" that
+            using "2.node_comm" that
             by (force simp add: morph_comp_def to_nmorph_def to_ngraph_def)
           also have \<open>\<dots> = \<^bsub>h \<circ>\<^sub>\<rightarrow> to_nmorph e\<^esub>\<^sub>V v\<close>
           proof -
@@ -1545,7 +1552,7 @@ proof -
         have ec: \<open>\<^bsub>ux \<circ>\<^sub>\<rightarrow> to_nmorph e' \<circ>\<^sub>\<rightarrow> to_nmorph g'\<^esub>\<^sub>E ea = \<^bsub>h \<circ>\<^sub>\<rightarrow> to_nmorph e\<^esub>\<^sub>E ea\<close> if \<open>ea \<in> E\<^bsub>to_ngraph B\<^esub>\<close> for ea
         proof -
           have \<open>\<^bsub>ux \<circ>\<^sub>\<rightarrow> to_nmorph e' \<circ>\<^sub>\<rightarrow> to_nmorph g'\<^esub>\<^sub>E ea = \<^bsub>ux \<circ>\<^sub>\<rightarrow> to_nmorph e'' \<circ>\<^sub>\<rightarrow> to_nmorph e\<^esub>\<^sub>E ea\<close>
-            using "2.edge_commutativity" that
+            using "2.edge_comm" that
             by (force simp add: morph_comp_def to_nmorph_def to_ngraph_def)
           also have \<open>\<dots> = \<^bsub>h \<circ>\<^sub>\<rightarrow> to_nmorph e\<^esub>\<^sub>E ea\<close>
           proof -
@@ -1605,17 +1612,21 @@ proof -
 qed
 qed
 
+(* We cant deduce that `e` and `e'` are valid morphisms *)
+text_raw \<open>\DefineSnippet{po-decomposition}{\<close>
 lemma pushout_decomposition:
   assumes
-(* We cant deduce that `e` and `e'` are valid morphisms *)
-    e:  \<open>morphism B E e\<close> and
-    e': \<open> morphism D F e'\<close> and
-    1: \<open>pushout_diagram A B C D f g g' f'\<close> and
-    "1+2":  \<open>pushout_diagram A E C F (e \<circ>\<^sub>\<rightarrow> f) g  e'' (e' \<circ>\<^sub>\<rightarrow> f')\<close> and
-    "2cv": \<open>\<And>v. v \<in> V\<^bsub>B\<^esub> \<Longrightarrow> \<^bsub>e'' \<circ>\<^sub>\<rightarrow> e\<^esub>\<^sub>V v = \<^bsub>e' \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>V v\<close> and
-    "2ce": \<open>\<And>ea. ea \<in> E\<^bsub>B\<^esub> \<Longrightarrow> \<^bsub>e'' \<circ>\<^sub>\<rightarrow> e\<^esub>\<^sub>E ea = \<^bsub>e' \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>E ea\<close>
+  e:\<open>morphism B E e\<close> and
+  e': \<open> morphism D F e'\<close> and
+  1:\<open>pushout_diagram A B C D f g g' f'\<close> and
+  "1+2":\<open>pushout_diagram A E C F (e \<circ>\<^sub>\<rightarrow> f) g  e'' (e' \<circ>\<^sub>\<rightarrow> f')\<close> and
+  "2cv":\<open>\<And>v. v \<in> V\<^bsub>B\<^esub> \<Longrightarrow> \<^bsub>e'' \<circ>\<^sub>\<rightarrow> e\<^esub>\<^sub>V v = \<^bsub>e' \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>V v\<close> and
+  "2ce":\<open>\<And>ea. ea \<in> E\<^bsub>B\<^esub> \<Longrightarrow> \<^bsub>e'' \<circ>\<^sub>\<rightarrow> e\<^esub>\<^sub>E ea = \<^bsub>e' \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>E ea\<close>
   shows \<open>pushout_diagram B E D F e g' e'' e'\<close>
+(*<*)
 proof -
+(*>*)
+text_raw \<open>}%EndSnippet\<close>
   interpret po1: pushout_diagram A B C D f g g' f'
     using 1 by assumption
 
@@ -1673,7 +1684,7 @@ proof -
       have a: \<open>\<forall>v\<in>V\<^bsub>to_ngraph A\<^esub>. \<^bsub>h \<circ>\<^sub>\<rightarrow> to_nmorph (e \<circ>\<^sub>\<rightarrow> f)\<^esub>\<^sub>V v = \<^bsub>y \<circ>\<^sub>\<rightarrow> to_nmorph f' \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>V v\<close>
       proof 
         have \<open>\<^bsub>to_nmorph g' \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>V v = \<^bsub>to_nmorph f' \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>to_ngraph A\<^esub>\<close> for v
-          using that po1.node_commutativity comp_lift_node 
+          using that po1.node_comm comp_lift_node 
           by blast
 
         thus \<open>\<^bsub>h \<circ>\<^sub>\<rightarrow> to_nmorph (e \<circ>\<^sub>\<rightarrow> f)\<^esub>\<^sub>V v = \<^bsub>y \<circ>\<^sub>\<rightarrow> to_nmorph f' \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>to_ngraph A\<^esub>\<close>for v
@@ -1686,7 +1697,7 @@ proof -
      have b: \<open>\<forall>ea\<in>E\<^bsub>to_ngraph A\<^esub>. \<^bsub>h \<circ>\<^sub>\<rightarrow> to_nmorph (e \<circ>\<^sub>\<rightarrow> f)\<^esub>\<^sub>E ea = \<^bsub>y \<circ>\<^sub>\<rightarrow> to_nmorph f' \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>E ea\<close>
      proof
        have \<open>\<^bsub>to_nmorph g' \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>E ea = \<^bsub>to_nmorph f' \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>E ea\<close> if \<open>ea \<in> E\<^bsub>to_ngraph A\<^esub>\<close> for ea
-            using that po1.edge_commutativity comp_lift_edge
+            using that po1.edge_comm comp_lift_edge
             by blast
   
           thus \<open>\<^bsub>h \<circ>\<^sub>\<rightarrow> to_nmorph (e \<circ>\<^sub>\<rightarrow> f)\<^esub>\<^sub>E ea = \<^bsub>y \<circ>\<^sub>\<rightarrow> to_nmorph f' \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>E ea\<close> if \<open>ea \<in> E\<^bsub>to_ngraph A\<^esub>\<close>for ea
@@ -1713,7 +1724,7 @@ proof -
        proof 
          have \<open>\<^bsub>to_nmorph e'' \<circ>\<^sub>\<rightarrow> to_nmorph e \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>V v = \<^bsub>to_nmorph e' \<circ>\<^sub>\<rightarrow> to_nmorph f' \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>V v\<close>
            if \<open>v \<in> V\<^bsub>to_ngraph A\<^esub>\<close> for v
-           using po12.node_commutativity that 
+           using po12.node_comm that 
            by (auto simp add: morph_comp_def to_nmorph_def to_ngraph_def)
   
          thus \<open>\<^bsub>h \<circ>\<^sub>\<rightarrow> to_nmorph e \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>V v = \<^bsub>y \<circ>\<^sub>\<rightarrow> to_nmorph f' \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>V v\<close>
@@ -1730,7 +1741,7 @@ proof -
        proof 
          have \<open>\<^bsub>to_nmorph e'' \<circ>\<^sub>\<rightarrow> to_nmorph e \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>E ea = \<^bsub>to_nmorph e' \<circ>\<^sub>\<rightarrow> to_nmorph f' \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>E ea\<close>
            if \<open>ea \<in> E\<^bsub>to_ngraph A\<^esub>\<close> for ea
-           using po12.edge_commutativity that 
+           using po12.edge_comm that 
            by (auto simp add: morph_comp_def to_nmorph_def to_ngraph_def)
   
          thus \<open>\<^bsub>h \<circ>\<^sub>\<rightarrow> to_nmorph e \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>E ea = \<^bsub>y \<circ>\<^sub>\<rightarrow> to_nmorph f' \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>E ea\<close>

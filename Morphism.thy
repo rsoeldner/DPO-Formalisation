@@ -2,13 +2,16 @@ theory Morphism
   imports Graph 
 begin
 
+text_raw \<open>\DefineSnippet{pre-morph}{\<close>
 record ('v\<^sub>1,'v\<^sub>2,'e\<^sub>1,'e\<^sub>2) pre_morph =
   node_map :: "'v\<^sub>1 \<Rightarrow> 'v\<^sub>2"
   edge_map :: "'e\<^sub>1 \<Rightarrow> 'e\<^sub>2"
+text_raw \<open>}%EndSnippet\<close>
 
 notation node_map ("\<^bsub>_\<^esub>\<^sub>V")
 notation edge_map ("\<^bsub>_\<^esub>\<^sub>E")
 
+text_raw \<open>\DefineSnippet{locale-morph}{\<close>
 locale morphism =
   G: graph G +
   H: graph H for
@@ -23,6 +26,7 @@ locale morphism =
     target_preserve : "e \<in> E\<^bsub>G\<^esub> \<Longrightarrow> \<^bsub>f\<^esub>\<^sub>V (t\<^bsub>G\<^esub> e) = t\<^bsub>H\<^esub> (\<^bsub>f\<^esub>\<^sub>E e)" and
     label_preserve  : "v \<in> V\<^bsub>G\<^esub> \<Longrightarrow> l\<^bsub>G\<^esub> v = l\<^bsub>H\<^esub> (\<^bsub>f\<^esub>\<^sub>V v)" and
     mark_preserve   : "e \<in> E\<^bsub>G\<^esub> \<Longrightarrow> m\<^bsub>G\<^esub> e = m\<^bsub>H\<^esub> (\<^bsub>f\<^esub>\<^sub>E e)"
+text_raw \<open>}%EndSnippet\<close>
 
 definition morph_comp
   :: "('v\<^sub>2,'v\<^sub>3,'e\<^sub>2,'e\<^sub>3) pre_morph 
@@ -86,11 +90,12 @@ lemma morph_assoc_edges:
   shows \<open>\<^bsub>f \<circ>\<^sub>\<rightarrow> (g \<circ>\<^sub>\<rightarrow> h)\<^esub>\<^sub>E e = \<^bsub>(f \<circ>\<^sub>\<rightarrow> g) \<circ>\<^sub>\<rightarrow> h\<^esub>\<^sub>E e\<close>
   by (simp add: morph_comp_def)
 
-
+text_raw \<open>\DefineSnippet{inj-morph}{\<close>
 locale injective_morphism = morphism +
   assumes 
     inj_nodes: "inj_on \<^bsub>f\<^esub>\<^sub>V V\<^bsub>G\<^esub>" and
     inj_edges: "inj_on \<^bsub>f\<^esub>\<^sub>E E\<^bsub>G\<^esub>"
+text_raw \<open>}%EndSnippet\<close>
 
 lemma inj_comp_fg_g_inj:
   assumes \<open>morphism G H g\<close> \<open>morphism H K f\<close> \<open>injective_morphism G H (f \<circ>\<^sub>\<rightarrow> g)\<close>

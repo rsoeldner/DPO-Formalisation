@@ -269,7 +269,7 @@ lemma reduced_chain_condition_nodes:
   fixes x y
   assumes \<open>x \<in> V\<^bsub>B\<^esub>\<close> \<open>y \<in> V\<^bsub>C\<^esub>\<close> \<open>\<^bsub>f\<^esub>\<^sub>V x = \<^bsub>g\<^esub>\<^sub>V y\<close>
   shows \<open>\<exists>a \<in> V\<^bsub>A\<^esub>. (\<^bsub>b\<^esub>\<^sub>V a = x \<and> \<^bsub>c\<^esub>\<^sub>V a = y)\<close>
-  using pb.node_commutativity assms
+  using pb.node_comm assms
   by (auto simp add: morph_comp_def A_def c_def b_def)
 
 
