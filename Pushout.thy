@@ -1,8 +1,8 @@
 theory Pushout
-  imports Morphism Generics "HOL-Library.Disjoint_Sets"
+  imports Morphism "HOL-Library.Disjoint_Sets"
 begin
 
-abbreviation Ex1M :: "(('v\<^sub>1,'v\<^sub>2,'e\<^sub>1,'e\<^sub>2) pre_morph \<Rightarrow> bool) \<Rightarrow> ('v\<^sub>1,'e\<^sub>1,'l,'m) pre_graph \<Rightarrow> bool"
+abbreviation Ex1M :: "(('v,'e) pre_morph \<Rightarrow> bool) \<Rightarrow> ('v,'e,'l,'m) pre_graph \<Rightarrow> bool"
   where "Ex1M P E \<equiv> \<exists>x. P x \<and> (\<forall>y. P y 
     \<longrightarrow> ((\<forall>e \<in> E\<^bsub>E\<^esub>. \<^bsub>y\<^esub>\<^sub>E e = \<^bsub>x\<^esub>\<^sub>E e) \<and>(\<forall>v \<in> V\<^bsub>E\<^esub>. \<^bsub>y\<^esub>\<^sub>V v = \<^bsub>x\<^esub>\<^sub>V v)))"
 
@@ -46,18 +46,18 @@ assumes
   node_comm: \<open>v \<in> V\<^bsub>A\<^esub> \<Longrightarrow> \<^bsub>f \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>V v = \<^bsub>g \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>V v\<close> and
   edge_comm: \<open>e \<in> E\<^bsub>A\<^esub> \<Longrightarrow> \<^bsub>f \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>E e = \<^bsub>g \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>E e\<close> and
   universal_property: \<open>\<lbrakk>
-    graph (D' :: ('c,'d) ngraph); 
-    morphism (to_ngraph B) D' x; 
-    morphism (to_ngraph C) D' y;
-     \<forall>v \<in> V\<^bsub>to_ngraph A\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> (to_nmorph b)\<^esub>\<^sub>V v = \<^bsub>y \<circ>\<^sub>\<rightarrow> (to_nmorph c)\<^esub>\<^sub>V v;
-     \<forall>e \<in> E\<^bsub>to_ngraph A\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> (to_nmorph b)\<^esub>\<^sub>E e = \<^bsub>y \<circ>\<^sub>\<rightarrow> (to_nmorph c)\<^esub>\<^sub>E e\<rbrakk> 
+    graph D'; 
+    morphism B D' x; 
+    morphism C D' y;
+     \<forall>v \<in> V\<^bsub>A\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>V v = \<^bsub>y \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>V v;
+     \<forall>e \<in> E\<^bsub>A\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>E e = \<^bsub>y \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>E e\<rbrakk> 
 
-      \<Longrightarrow> Ex1M (\<lambda>u. morphism (to_ngraph D) D' u \<and>
-            (\<forall>v \<in> V\<^bsub>to_ngraph B\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> (to_nmorph f)\<^esub>\<^sub>V v = \<^bsub>x\<^esub>\<^sub>V v) \<and>
-            (\<forall>e \<in> E\<^bsub>to_ngraph B\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> (to_nmorph f)\<^esub>\<^sub>E e = \<^bsub>x\<^esub>\<^sub>E e) \<and>
-            (\<forall>v \<in> V\<^bsub>to_ngraph C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> (to_nmorph g)\<^esub>\<^sub>V v = \<^bsub>y\<^esub>\<^sub>V v) \<and>
-            (\<forall>e \<in> E\<^bsub>to_ngraph C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> (to_nmorph g)\<^esub>\<^sub>E e = \<^bsub>y\<^esub>\<^sub>E e))
-            (to_ngraph D)\<close>
+      \<Longrightarrow> Ex1M (\<lambda>u. morphism D D' u \<and>
+            (\<forall>v \<in> V\<^bsub>B\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>V v = \<^bsub>x\<^esub>\<^sub>V v) \<and>
+            (\<forall>e \<in> E\<^bsub>B\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>E e = \<^bsub>x\<^esub>\<^sub>E e) \<and>
+            (\<forall>v \<in> V\<^bsub>C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>V v = \<^bsub>y\<^esub>\<^sub>V v) \<and>
+            (\<forall>e \<in> E\<^bsub>C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>E e = \<^bsub>y\<^esub>\<^sub>E e))
+            D\<close>
 text_raw \<open>}%EndSnippet\<close>
 context pushout_diagram
 begin
@@ -72,222 +72,19 @@ next
     using edge_comm[OF that] by simp
 next
   show \<open>Ex1M
-        (\<lambda>xa. morphism (to_ngraph D) D' xa \<and>
-              (\<forall>v\<in>V\<^bsub>to_ngraph C\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>V v = \<^bsub>x\<^esub>\<^sub>V v) \<and>
-              (\<forall>e\<in>E\<^bsub>to_ngraph C\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>E e = \<^bsub>x\<^esub>\<^sub>E e) \<and> (\<forall>v\<in>V\<^bsub>to_ngraph B\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>V v = \<^bsub>y\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>to_ngraph B\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>E e = \<^bsub>y\<^esub>\<^sub>E e))
-        (to_ngraph D)\<close>
-    if  \<open>graph D'\<close> \<open>morphism (to_ngraph C) D' x\<close> \<open>morphism (to_ngraph B) D' y\<close>
-        \<open>\<forall>v\<in>V\<^bsub>to_ngraph A\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> to_nmorph c\<^esub>\<^sub>V v = \<^bsub>y \<circ>\<^sub>\<rightarrow> to_nmorph b\<^esub>\<^sub>V v\<close>
-        \<open>\<forall>e\<in>E\<^bsub>to_ngraph A\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> to_nmorph c\<^esub>\<^sub>E e = \<^bsub>y \<circ>\<^sub>\<rightarrow> to_nmorph b\<^esub>\<^sub>E e\<close>
-      for D' :: "('c,'d) ngraph" and x y
-  proof -
-    have a: \<open>\<forall>v\<in>V\<^bsub>to_ngraph A\<^esub>. \<^bsub>y \<circ>\<^sub>\<rightarrow> to_nmorph b\<^esub>\<^sub>V v = \<^bsub>x \<circ>\<^sub>\<rightarrow> to_nmorph c\<^esub>\<^sub>V v\<close>
-      using \<open>\<forall>v\<in>V\<^bsub>to_ngraph A\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> to_nmorph c\<^esub>\<^sub>V v = \<^bsub>y \<circ>\<^sub>\<rightarrow> to_nmorph b\<^esub>\<^sub>V v\<close>
-      by fastforce
-
-    have b: \<open>\<forall>e\<in>E\<^bsub>to_ngraph A\<^esub>. \<^bsub>y \<circ>\<^sub>\<rightarrow> to_nmorph b\<^esub>\<^sub>E e = \<^bsub>x \<circ>\<^sub>\<rightarrow> to_nmorph c\<^esub>\<^sub>E e\<close>
-      using  \<open>\<forall>e\<in>E\<^bsub>to_ngraph A\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> to_nmorph c\<^esub>\<^sub>E e = \<^bsub>y \<circ>\<^sub>\<rightarrow> to_nmorph b\<^esub>\<^sub>E e\<close>
-      by fastforce
-
-    have c: \<open>(\<lambda>xa. morphism (to_ngraph D) D' xa \<and>
-       (\<forall>v\<in>V\<^bsub>to_ngraph B\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>V v = \<^bsub>y\<^esub>\<^sub>V v) \<and>
-       (\<forall>e\<in>E\<^bsub>to_ngraph B\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>E e = \<^bsub>y\<^esub>\<^sub>E e) \<and> (\<forall>v\<in>V\<^bsub>to_ngraph C\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>V v = \<^bsub>x\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>to_ngraph C\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>E e = \<^bsub>x\<^esub>\<^sub>E e)) = (\<lambda>xa. morphism (to_ngraph D) D' xa \<and>
-           (\<forall>v\<in>V\<^bsub>to_ngraph C\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>V v = \<^bsub>x\<^esub>\<^sub>V v) \<and>
-           (\<forall>e\<in>E\<^bsub>to_ngraph C\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>E e = \<^bsub>x\<^esub>\<^sub>E e) \<and> (\<forall>v\<in>V\<^bsub>to_ngraph B\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>V v = \<^bsub>y\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>to_ngraph B\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>E e = \<^bsub>y\<^esub>\<^sub>E e))\<close>
-      by fastforce
-
-    show ?thesis
-      using ex1m_eq_surrogate[OF c universal_property[OF \<open>graph D'\<close> \<open>morphism (to_ngraph B) D' y\<close> \<open>morphism (to_ngraph C) D' x\<close> a b]]
-      by assumption
-  qed
-qed
-
+        (\<lambda>xa. morphism D D' xa \<and>
+              (\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>V v = \<^bsub>x\<^esub>\<^sub>V v) \<and>
+              (\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>E e = \<^bsub>x\<^esub>\<^sub>E e) \<and> (\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>V v = \<^bsub>y\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>E e = \<^bsub>y\<^esub>\<^sub>E e))
+        D\<close>
+    if  \<open>graph D'\<close> \<open>morphism C D' x\<close> \<open>morphism B D' y\<close>
+        \<open>\<forall>v\<in>V\<^bsub>A\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>V v = \<^bsub>y \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>V v\<close>
+        \<open>\<forall>e\<in>E\<^bsub>A\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>E e = \<^bsub>y \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>E e\<close>
+      for D' x y
+    using that universal_property[of "D'"]
+    by (smt (verit))
       
 
-lemma universal_property_exist_gen:
-  fixes D'
-  assumes \<open>graph D'\<close> \<open>morphism B D' x\<close> \<open>morphism C D' y\<close>
-    \<open>\<forall>v \<in> V\<^bsub>A\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>V v = \<^bsub>y \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>V v\<close>
-    \<open>\<forall>e \<in> E\<^bsub>A\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>E e = \<^bsub>y \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>E e\<close>
-  shows \<open>Ex1M (\<lambda>u. morphism D D' u \<and>
-            (\<forall>v \<in> V\<^bsub>B\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>V v = \<^bsub>x\<^esub>\<^sub>V v) \<and>
-            (\<forall>e \<in> E\<^bsub>B\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>E e = \<^bsub>x\<^esub>\<^sub>E e) \<and>
-            (\<forall>v \<in> V\<^bsub>C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>V v = \<^bsub>y\<^esub>\<^sub>V v) \<and>
-            (\<forall>e \<in> E\<^bsub>C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>E e = \<^bsub>y\<^esub>\<^sub>E e)) D\<close>
-proof -
-  interpret nD: graph \<open>to_ngraph D\<close>
-    using graph_ngraph_corres_iff f.H.graph_axioms 
-    by blast
-
-  interpret nD': graph \<open>to_ngraph D'\<close>
-    using graph_ngraph_corres_iff 
-    using assms(1) by blast
-
-  interpret nx: morphism \<open>to_ngraph B\<close> \<open>to_ngraph D'\<close> \<open>to_nmorph x\<close>
-    using morph_eq_nmorph_iff[symmetric] assms(2)
-    by auto
-
-  interpret ny: morphism \<open>to_ngraph C\<close> \<open>to_ngraph D'\<close> \<open>to_nmorph y\<close>
-    using morph_eq_nmorph_iff[symmetric] assms(3)
-    by auto
-
-  have n:\<open>\<forall>v\<in>V\<^bsub>to_ngraph A\<^esub>. \<^bsub>to_nmorph x \<circ>\<^sub>\<rightarrow> to_nmorph b\<^esub>\<^sub>V v = \<^bsub>to_nmorph y \<circ>\<^sub>\<rightarrow> to_nmorph c\<^esub>\<^sub>V v\<close>
-    using assms(4) comp_lift_node
-    by blast
-
-  have e:\<open>\<forall>e\<in>E\<^bsub>to_ngraph A\<^esub>. \<^bsub>to_nmorph x \<circ>\<^sub>\<rightarrow> to_nmorph b\<^esub>\<^sub>E e = \<^bsub>to_nmorph y \<circ>\<^sub>\<rightarrow> to_nmorph c\<^esub>\<^sub>E e\<close>
-    using assms(5) comp_lift_edge
-    by blast
-
-  obtain u where 
-    ab: \<open> morphism (to_ngraph D) (to_ngraph D') u\<close> 
-    and \<open>\<forall>v \<in> V\<^bsub>to_ngraph B\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> (to_nmorph f)\<^esub>\<^sub>V v = \<^bsub>to_nmorph x\<^esub>\<^sub>V v\<close>
-    \<open>(\<forall>e \<in> E\<^bsub>to_ngraph B\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> (to_nmorph f)\<^esub>\<^sub>E e = \<^bsub>to_nmorph x\<^esub>\<^sub>E e)\<close> and
-    \<open>(\<forall>v \<in> V\<^bsub>to_ngraph C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> (to_nmorph g)\<^esub>\<^sub>V v = \<^bsub>to_nmorph y\<^esub>\<^sub>V v)\<close> and
-    \<open>(\<forall>e \<in> E\<^bsub>to_ngraph C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> (to_nmorph g)\<^esub>\<^sub>E e = \<^bsub>to_nmorph y\<^esub>\<^sub>E e)\<close>
-    using universal_property[OF nD'.graph_axioms nx.morphism_axioms ny.morphism_axioms n e]
-    by fast
-
-  show ?thesis
-  proof (rule_tac x = \<open>(from_nmorph u) :: ('i,'k,'j,'l) pre_morph\<close> in exI, intro conjI)
-    show \<open>morphism D D' (from_nmorph u)\<close>
-      using ab morph_tong_tong_u_is_morph_tonm
-      by blast
-  next
-    show \<open>\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>from_nmorph u \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>V v = \<^bsub>x\<^esub>\<^sub>V v\<close>
-      using \<open>\<forall>v \<in> V\<^bsub>to_ngraph B\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> (to_nmorph f)\<^esub>\<^sub>V v = \<^bsub>to_nmorph x\<^esub>\<^sub>V v\<close>
-      by (auto simp: from_nmorph_def to_nmorph_def morph_comp_def to_ngraph_def from_ngraph_def)
-  next
-    show \<open>\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>from_nmorph u \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>E e = \<^bsub>x\<^esub>\<^sub>E e\<close>
-      using \<open>(\<forall>e \<in> E\<^bsub>to_ngraph B\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> (to_nmorph f)\<^esub>\<^sub>E e = \<^bsub>to_nmorph x\<^esub>\<^sub>E e)\<close>
-      by (auto simp: from_nmorph_def to_nmorph_def morph_comp_def to_ngraph_def from_ngraph_def)
-  next
-    show \<open>\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>from_nmorph u \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>V v = \<^bsub>y\<^esub>\<^sub>V v\<close>
-      using \<open>(\<forall>v \<in> V\<^bsub>to_ngraph C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> (to_nmorph g)\<^esub>\<^sub>V v = \<^bsub>to_nmorph y\<^esub>\<^sub>V v)\<close>
-      by (auto simp: from_nmorph_def to_nmorph_def morph_comp_def to_ngraph_def from_ngraph_def)
-  next
-    show \<open>\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>from_nmorph u \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>E e = \<^bsub>y\<^esub>\<^sub>E e\<close>
-      using \<open>(\<forall>e \<in> E\<^bsub>to_ngraph C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> (to_nmorph g)\<^esub>\<^sub>E e = \<^bsub>to_nmorph y\<^esub>\<^sub>E e)\<close>
-      by (auto simp: from_nmorph_def to_nmorph_def morph_comp_def to_ngraph_def from_ngraph_def)
-  next
-    show \<open>\<forall>ya. morphism D D' ya 
-              \<and> (\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>ya \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>V v = \<^bsub>x\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>ya \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>E e = \<^bsub>x\<^esub>\<^sub>E e) 
-              \<and> (\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>ya \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>V v = \<^bsub>y\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>ya \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>E e = \<^bsub>y\<^esub>\<^sub>E e) 
-            \<longrightarrow> (\<forall>e\<in>E\<^bsub>D\<^esub>. \<^bsub>ya\<^esub>\<^sub>E e = \<^bsub>(from_nmorph u)  :: ('i,'k,'j,'l) pre_morph\<^esub>\<^sub>E e) 
-              \<and> (\<forall>v\<in>V\<^bsub>D\<^esub>. \<^bsub>ya\<^esub>\<^sub>V v = \<^bsub>from_nmorph u\<^esub>\<^sub>V v) \<close>
-    proof -
-
-      have aa: 
-        \<open>morphism (to_ngraph D) (to_ngraph D') u 
-      \<and> (\<forall>v\<in>V\<^bsub>to_ngraph B\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>V v = \<^bsub>to_nmorph x\<^esub>\<^sub>V v) 
-      \<and> (\<forall>e\<in>E\<^bsub>to_ngraph B\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>E e = \<^bsub>to_nmorph x\<^esub>\<^sub>E e) 
-      \<and> (\<forall>v\<in>V\<^bsub>to_ngraph C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>V v = \<^bsub>to_nmorph y\<^esub>\<^sub>V v) 
-      \<and> (\<forall>e\<in>E\<^bsub>to_ngraph C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>E e = \<^bsub>to_nmorph y\<^esub>\<^sub>E e)\<close>
-        using 
-          \<open>\<forall>e\<in>E\<^bsub>to_ngraph B\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>E e = \<^bsub>to_nmorph x\<^esub>\<^sub>E e\<close>
-          \<open>\<forall>e\<in>E\<^bsub>to_ngraph C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>E e = \<^bsub>to_nmorph y\<^esub>\<^sub>E e\<close>
-          \<open>\<forall>v\<in>V\<^bsub>to_ngraph B\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>V v = \<^bsub>to_nmorph x\<^esub>\<^sub>V v\<close>
-          \<open>\<forall>v\<in>V\<^bsub>to_ngraph C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>V v = \<^bsub>to_nmorph y\<^esub>\<^sub>V v\<close> ab
-        by simp
-
-      show ?thesis
-      proof safe
-
-        show \<open>\<^bsub>u' :: ('i,'k,'j,'l) pre_morph\<^esub>\<^sub>E e = \<^bsub>(from_nmorph u) :: ('i,'k,'j,'l) pre_morph\<^esub>\<^sub>E e\<close> 
-          if \<open>morphism D D' u'\<close>
-            \<open>\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>u' \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>V v = \<^bsub>x\<^esub>\<^sub>V v\<close>
-            \<open>\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>u' \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>E e = \<^bsub>x\<^esub>\<^sub>E e\<close>
-            \<open>\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>u' \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>V v = \<^bsub>y\<^esub>\<^sub>V v\<close>
-            \<open>\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>u' \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>E e = \<^bsub>y\<^esub>\<^sub>E e\<close>
-            \<open>e \<in> E\<^bsub>D\<^esub>\<close> for u' e
-        proof -
-
-          have a:
-            \<open>morphism (to_ngraph D) (to_ngraph D') (to_nmorph u') 
-        \<and> (\<forall>v\<in>V\<^bsub>to_ngraph B\<^esub>. \<^bsub>(to_nmorph u') \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>V v = \<^bsub>to_nmorph x\<^esub>\<^sub>V v) 
-        \<and> (\<forall>e\<in>E\<^bsub>to_ngraph B\<^esub>. \<^bsub>(to_nmorph u') \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>E e = \<^bsub>to_nmorph x\<^esub>\<^sub>E e) 
-        \<and> (\<forall>v\<in>V\<^bsub>to_ngraph C\<^esub>. \<^bsub>(to_nmorph u') \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>V v = \<^bsub>to_nmorph y\<^esub>\<^sub>V v) 
-        \<and> (\<forall>e\<in>E\<^bsub>to_ngraph C\<^esub>. \<^bsub>(to_nmorph u') \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>E e = \<^bsub>to_nmorph y\<^esub>\<^sub>E e)\<close>
-          proof (intro conjI)
-            show \<open>morphism (to_ngraph D) (to_ngraph D') (to_nmorph u')\<close>
-              using morph_eq_nmorph_iff that(1) by blast
-          next
-            show \<open>\<forall>v\<in>V\<^bsub>to_ngraph B\<^esub>. \<^bsub>to_nmorph u' \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>V v = \<^bsub>to_nmorph x\<^esub>\<^sub>V v\<close>
-              using that(2) comp_lift_node1
-              by blast
-          next
-            show \<open> \<forall>e::nat\<in>E\<^bsub>to_ngraph B\<^esub>. \<^bsub>to_nmorph u' \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>E e = \<^bsub>to_nmorph x\<^esub>\<^sub>E e\<close>
-              using that(3) comp_lift_edge1
-              by blast
-
-            show \<open>\<forall>v::nat\<in>V\<^bsub>to_ngraph C\<^esub>. \<^bsub>to_nmorph u' \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>V v = \<^bsub>to_nmorph y\<^esub>\<^sub>V v\<close>
-              using that(4) comp_lift_node1
-              by blast
-          next
-            show \<open>\<forall>e::nat\<in>E\<^bsub>to_ngraph C\<^esub>. \<^bsub>to_nmorph u' \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>E e = \<^bsub>to_nmorph y\<^esub>\<^sub>E e\<close>
-              using that(5) comp_lift_edge1
-              by blast
-          qed
-                 
-          from ex_eq[OF universal_property[OF nD'.graph_axioms nx.morphism_axioms ny.morphism_axioms n e] a aa]
-          have \<open>\<forall>e\<in>E\<^bsub>to_ngraph D\<^esub>. \<^bsub>to_nmorph u'\<^esub>\<^sub>E e = \<^bsub>u\<^esub>\<^sub>E e\<close>
-            by simp
-
-          thus ?thesis
-            using assms that(6) 
-            by (auto simp add: to_ngraph_def to_nmorph_def from_nmorph_def) (metis from_nat_to_nat)
-        qed
-      next
-        show \<open>\<^bsub>u'\<^esub>\<^sub>V v = \<^bsub>from_nmorph u\<^esub>\<^sub>V v\<close>   
-    if \<open>morphism D D' u'\<close>
-      \<open>\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>u' \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>V v = \<^bsub>x\<^esub>\<^sub>V v\<close>
-      \<open>\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>u' \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>E e = \<^bsub>x\<^esub>\<^sub>E e\<close>
-      \<open>\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>u' \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>V v = \<^bsub>y\<^esub>\<^sub>V v\<close>
-      \<open>\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>u' \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>E e = \<^bsub>y\<^esub>\<^sub>E e\<close>
-      \<open>v \<in> V\<^bsub>D\<^esub>\<close> for u' v
-        proof -
-
-          have a:
-            \<open>morphism (to_ngraph D) (to_ngraph D') (to_nmorph u') 
-        \<and> (\<forall>v\<in>V\<^bsub>to_ngraph B\<^esub>. \<^bsub>(to_nmorph u') \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>V v = \<^bsub>to_nmorph x\<^esub>\<^sub>V v) 
-        \<and> (\<forall>e\<in>E\<^bsub>to_ngraph B\<^esub>. \<^bsub>(to_nmorph u') \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>E e = \<^bsub>to_nmorph x\<^esub>\<^sub>E e) 
-        \<and> (\<forall>v\<in>V\<^bsub>to_ngraph C\<^esub>. \<^bsub>(to_nmorph u') \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>V v = \<^bsub>to_nmorph y\<^esub>\<^sub>V v) 
-        \<and> (\<forall>e\<in>E\<^bsub>to_ngraph C\<^esub>. \<^bsub>(to_nmorph u') \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>E e = \<^bsub>to_nmorph y\<^esub>\<^sub>E e)\<close>
-          proof (intro conjI)
-            show \<open>morphism (to_ngraph D) (to_ngraph D') (to_nmorph u')\<close>
-              using morph_eq_nmorph_iff that(1) by blast
-          next
-            show \<open>\<forall>v\<in>V\<^bsub>to_ngraph B\<^esub>. \<^bsub>to_nmorph u' \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>V v = \<^bsub>to_nmorph x\<^esub>\<^sub>V v\<close>
-              using that(2) comp_lift_node1
-              by blast
-          next
-            show \<open> \<forall>e::nat\<in>E\<^bsub>to_ngraph B\<^esub>. \<^bsub>to_nmorph u' \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>E e = \<^bsub>to_nmorph x\<^esub>\<^sub>E e\<close>
-              using that(3) comp_lift_edge1
-              by blast
-
-            show \<open>\<forall>v::nat\<in>V\<^bsub>to_ngraph C\<^esub>. \<^bsub>to_nmorph u' \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>V v = \<^bsub>to_nmorph y\<^esub>\<^sub>V v\<close>
-              using that(4) comp_lift_node1
-              by blast
-          next
-            show \<open>\<forall>e::nat\<in>E\<^bsub>to_ngraph C\<^esub>. \<^bsub>to_nmorph u' \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>E e = \<^bsub>to_nmorph y\<^esub>\<^sub>E e\<close>
-              using that(5) comp_lift_edge1
-              by blast
-          qed
-
-
-          from ex_eq[OF universal_property[OF nD'.graph_axioms nx.morphism_axioms ny.morphism_axioms n e] a aa]
-          have \<open>\<forall>v\<in>V\<^bsub>to_ngraph D\<^esub>. \<^bsub>to_nmorph u'\<^esub>\<^sub>V v = \<^bsub>u\<^esub>\<^sub>V v\<close>
-            by simp
-
-          thus ?thesis
-            using assms that(6) 
-            by (auto simp add: to_ngraph_def to_nmorph_def from_nmorph_def) (metis from_nat_to_nat)
-        qed
-      qed
-    qed
-  qed
-qed
-
+(*
 lemma b_inj_imp_g_inj:
   assumes \<open>injective_morphism A B b\<close>
   shows \<open>injective_morphism C D g\<close>
@@ -772,6 +569,7 @@ proof -
       by (auto simp add: morph_comp_def inj_on_def b.morph_edge_range)
   qed
 qed
+*)
 
 theorem uniqueness_po:
   fixes D'
@@ -794,7 +592,7 @@ proof
     obtain u where \<open>morphism D D' u\<close>
       and \<open>\<forall>v \<in> V\<^bsub>B\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>V v = \<^bsub>f'\<^esub>\<^sub>V v\<close> and \<open>\<forall>e \<in> E\<^bsub>B\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>E e = \<^bsub>f'\<^esub>\<^sub>E e\<close>
       and \<open>\<forall>v \<in> V\<^bsub>C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>V v = \<^bsub>g'\<^esub>\<^sub>V v\<close> and \<open>\<forall>e \<in> E\<^bsub>C\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>E e = \<^bsub>g'\<^esub>\<^sub>E e\<close>
-      using universal_property_exist_gen[of D' f' g']
+      using universal_property[of D' f' g']
         pushout_diagram.edge_comm[OF a] 
         pushout_diagram.node_comm[OF a]
         D' f' g'
@@ -803,7 +601,7 @@ proof
     obtain u' where \<open>morphism D' D u'\<close> 
       and \<open>\<forall>v \<in> V\<^bsub>B\<^esub>. \<^bsub>u' \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>V v = \<^bsub>f\<^esub>\<^sub>V v\<close> and \<open>\<forall>e \<in> E\<^bsub>B\<^esub>. \<^bsub>u' \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>E e = \<^bsub>f\<^esub>\<^sub>E e\<close>
       and \<open>\<forall>v \<in> V\<^bsub>C\<^esub>. \<^bsub>u' \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>V v = \<^bsub>g\<^esub>\<^sub>V v\<close> and \<open>\<forall>e \<in> E\<^bsub>C\<^esub>. \<^bsub>u' \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>E e = \<^bsub>g\<^esub>\<^sub>E e\<close>
-      using pushout_diagram.universal_property_exist_gen[of A B C D' b c f' g' D f g]
+      using pushout_diagram.universal_property[of A B C D' b c f' g' D f g]
       using f.H.graph_axioms a
       using f.morphism_axioms
       using g.morphism_axioms
@@ -850,7 +648,7 @@ proof
 
       show \<open>\<forall>v\<in>V\<^bsub>D\<^esub>. \<^bsub>u' \<circ>\<^sub>\<rightarrow> u\<^esub>\<^sub>V v = \<^bsub>idM\<^esub>\<^sub>V v\<close>
         using 
-          universal_property_exist_gen[of D f g]
+          universal_property[of D f g]
           ex_eq[of \<open>(\<lambda>x. morphism D D x \<and> (\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>V v = \<^bsub>f\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>E e = \<^bsub>f\<^esub>\<^sub>E e) \<and> (\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>V v = \<^bsub>g\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>E e = \<^bsub>g\<^esub>\<^sub>E e))\<close> D \<open>u' \<circ>\<^sub>\<rightarrow> u\<close> idM]
           edge_comm f.H.graph_axioms f.morphism_axioms g.morphism_axioms node_comm
           idm wf_morph_comp[OF \<open>morphism D D' u\<close> \<open>morphism D' D u'\<close>]
@@ -858,7 +656,7 @@ proof
 
       show \<open>\<forall>e\<in>E\<^bsub>D\<^esub>. \<^bsub>u' \<circ>\<^sub>\<rightarrow> u\<^esub>\<^sub>E e = \<^bsub>idM\<^esub>\<^sub>E e\<close>
         using 
-          universal_property_exist_gen[of D f g]
+          universal_property[of D f g]
           ex_eq[of \<open>(\<lambda>x. morphism D D x \<and> (\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>V v = \<^bsub>f\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>E e = \<^bsub>f\<^esub>\<^sub>E e) \<and> (\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>V v = \<^bsub>g\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>E e = \<^bsub>g\<^esub>\<^sub>E e))\<close> D \<open>u' \<circ>\<^sub>\<rightarrow> u\<close> idM]
           edge_comm f.H.graph_axioms f.morphism_axioms g.morphism_axioms node_comm
           idm wf_morph_comp[OF \<open>morphism D D' u\<close> \<open>morphism D' D u'\<close>]
@@ -902,7 +700,7 @@ proof
 
       show \<open>\<forall>v \<in> V\<^bsub>D'\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> u'\<^esub>\<^sub>V v =  \<^bsub>idM\<^esub>\<^sub>V v\<close>
         using 
-          pushout_diagram.universal_property_exist_gen[OF a D' \<open>morphism B D' f'\<close> \<open>morphism C D' g'\<close>]
+          pushout_diagram.universal_property[OF a D' \<open>morphism B D' f'\<close> \<open>morphism C D' g'\<close>]
           pushout_diagram.node_comm[OF a] pushout_diagram.edge_comm[OF a]
           ex_eq[of \<open>(\<lambda>x. morphism D' D' x \<and> (\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>V v = \<^bsub>f'\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>E e = \<^bsub>f'\<^esub>\<^sub>E e) \<and> (\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>V v = \<^bsub>g'\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>E e = \<^bsub>g'\<^esub>\<^sub>E e))\<close> D' \<open>u \<circ>\<^sub>\<rightarrow> u'\<close> idM]
           m idm
@@ -911,7 +709,7 @@ proof
 
       show \<open>\<forall>e \<in> E\<^bsub>D'\<^esub>. \<^bsub>u \<circ>\<^sub>\<rightarrow> u'\<^esub>\<^sub>E e = \<^bsub>idM\<^esub>\<^sub>E e\<close>
         using 
-          pushout_diagram.universal_property_exist_gen[OF a D' \<open>morphism B D' f'\<close> \<open>morphism C D' g'\<close>]
+          pushout_diagram.universal_property[OF a D' \<open>morphism B D' f'\<close> \<open>morphism C D' g'\<close>]
           pushout_diagram.node_comm[OF a] pushout_diagram.edge_comm[OF a]
           ex_eq[of \<open>(\<lambda>x. morphism D' D' x \<and> (\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>V v = \<^bsub>f'\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>E e = \<^bsub>f'\<^esub>\<^sub>E e) \<and> (\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>V v = \<^bsub>g'\<^esub>\<^sub>V v) \<and> (\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>E e = \<^bsub>g'\<^esub>\<^sub>E e))\<close> D' \<open>u \<circ>\<^sub>\<rightarrow> u'\<close> idM]
           m idm
@@ -991,28 +789,28 @@ next
     next
 
       show \<open>Ex1M
-            (\<lambda>xa. morphism (to_ngraph D') D'' xa 
-                    \<and> (\<forall>v\<in>V\<^bsub>to_ngraph B\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> to_nmorph f'\<^esub>\<^sub>V v = \<^bsub>f''\<^esub>\<^sub>V v) 
-                    \<and> (\<forall>e\<in>E\<^bsub>to_ngraph B\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> to_nmorph f'\<^esub>\<^sub>E e = \<^bsub>f''\<^esub>\<^sub>E e) 
-                    \<and> (\<forall>v\<in>V\<^bsub>to_ngraph C\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> to_nmorph g'\<^esub>\<^sub>V v = \<^bsub>g''\<^esub>\<^sub>V v) 
-                    \<and> (\<forall>e\<in>E\<^bsub>to_ngraph C\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> to_nmorph g'\<^esub>\<^sub>E e = \<^bsub>g''\<^esub>\<^sub>E e))
-            (to_ngraph D')\<close> 
-        if \<open>graph D''\<close> and \<open>morphism (to_ngraph B) D'' f''\<close> and \<open>morphism (to_ngraph C) D'' g''\<close> 
-          and \<open>\<forall>v\<in>V\<^bsub>to_ngraph A\<^esub>. \<^bsub>f'' \<circ>\<^sub>\<rightarrow> to_nmorph b\<^esub>\<^sub>V v = \<^bsub>g'' \<circ>\<^sub>\<rightarrow> to_nmorph c\<^esub>\<^sub>V v\<close>
-          and \<open>\<forall>e\<in>E\<^bsub>to_ngraph A\<^esub>. \<^bsub>f'' \<circ>\<^sub>\<rightarrow> to_nmorph b\<^esub>\<^sub>E e = \<^bsub>g'' \<circ>\<^sub>\<rightarrow> to_nmorph c\<^esub>\<^sub>E e\<close>
-        for D'' :: "('c,'d) ngraph" and f'' g''
+            (\<lambda>xa. morphism D' D'' xa 
+                    \<and> (\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>V v = \<^bsub>f''\<^esub>\<^sub>V v) 
+                    \<and> (\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>E e = \<^bsub>f''\<^esub>\<^sub>E e) 
+                    \<and> (\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>V v = \<^bsub>g''\<^esub>\<^sub>V v) 
+                    \<and> (\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>xa \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>E e = \<^bsub>g''\<^esub>\<^sub>E e))
+            D'\<close> 
+        if \<open>graph D''\<close> and \<open>morphism B D'' f''\<close> and \<open>morphism C D'' g''\<close> 
+          and \<open>\<forall>v\<in>V\<^bsub>A\<^esub>. \<^bsub>f'' \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>V v = \<^bsub>g'' \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>V v\<close>
+          and \<open>\<forall>e\<in>E\<^bsub>A\<^esub>. \<^bsub>f'' \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>E e = \<^bsub>g'' \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>E e\<close>
+        for D'' f'' g''
       proof -
 
-        obtain u'' where \<open>morphism (to_ngraph D) D'' u''\<close> and
-          \<open>\<forall>v \<in> V\<^bsub>to_ngraph B\<^esub>. \<^bsub>u'' \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>V v= \<^bsub>f''\<^esub>\<^sub>V v\<close> and \<open>\<forall>e \<in> E\<^bsub>to_ngraph B\<^esub>. \<^bsub>u'' \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>E e= \<^bsub>f''\<^esub>\<^sub>E e\<close> and
-          \<open>\<forall>v \<in> V\<^bsub>to_ngraph C\<^esub>. \<^bsub>u'' \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>V v= \<^bsub>g''\<^esub>\<^sub>V v\<close> and \<open>\<forall>e \<in> E\<^bsub>to_ngraph C\<^esub>. \<^bsub>u'' \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>E e= \<^bsub>g''\<^esub>\<^sub>E e\<close>
+        obtain u'' where \<open>morphism D D'' u''\<close> and
+          \<open>\<forall>v \<in> V\<^bsub>B\<^esub>. \<^bsub>u'' \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>V v= \<^bsub>f''\<^esub>\<^sub>V v\<close> and \<open>\<forall>e \<in> E\<^bsub>B\<^esub>. \<^bsub>u'' \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>E e= \<^bsub>f''\<^esub>\<^sub>E e\<close> and
+          \<open>\<forall>v \<in> V\<^bsub>C\<^esub>. \<^bsub>u'' \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>V v= \<^bsub>g''\<^esub>\<^sub>V v\<close> and \<open>\<forall>e \<in> E\<^bsub>C\<^esub>. \<^bsub>u'' \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>E e= \<^bsub>g''\<^esub>\<^sub>E e\<close>
           using 
             universal_property[OF 
               \<open>graph D''\<close> 
-              \<open>morphism (to_ngraph B) D'' f''\<close>
-              \<open>morphism (to_ngraph C) D'' g''\<close>
-              \<open>\<forall>v\<in>V\<^bsub>to_ngraph A\<^esub>. \<^bsub>f'' \<circ>\<^sub>\<rightarrow> to_nmorph b\<^esub>\<^sub>V v = \<^bsub>g'' \<circ>\<^sub>\<rightarrow> to_nmorph c\<^esub>\<^sub>V v\<close>
-              \<open>\<forall>e\<in>E\<^bsub>to_ngraph A\<^esub>. \<^bsub>f'' \<circ>\<^sub>\<rightarrow> to_nmorph b\<^esub>\<^sub>E e = \<^bsub>g'' \<circ>\<^sub>\<rightarrow> to_nmorph c\<^esub>\<^sub>E e\<close>
+              \<open>morphism B D'' f''\<close>
+              \<open>morphism C D'' g''\<close>
+              \<open>\<forall>v\<in>V\<^bsub>A\<^esub>. \<^bsub>f'' \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>V v = \<^bsub>g'' \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>V v\<close>
+              \<open>\<forall>e\<in>E\<^bsub>A\<^esub>. \<^bsub>f'' \<circ>\<^sub>\<rightarrow> b\<^esub>\<^sub>E e = \<^bsub>g'' \<circ>\<^sub>\<rightarrow> c\<^esub>\<^sub>E e\<close>
               ]
           by fast
         obtain u where \<open>bijective_morphism D D' u\<close> and 
@@ -1026,21 +824,21 @@ next
           using  bijective_morphism.ex_inv[OF \<open>bijective_morphism D D' u\<close>]
           by auto
 
-        let ?x = \<open>\<lparr>node_map = \<^bsub>u'' \<circ>\<^sub>\<rightarrow> to_nmorph u'\<^esub>\<^sub>V, edge_map=\<^bsub>u'' \<circ>\<^sub>\<rightarrow> to_nmorph u'\<^esub>\<^sub>E\<rparr>\<close>
+        let ?x = \<open>\<lparr>node_map = \<^bsub>u'' \<circ>\<^sub>\<rightarrow> u'\<^esub>\<^sub>V, edge_map=\<^bsub>u'' \<circ>\<^sub>\<rightarrow> u'\<^esub>\<^sub>E\<rparr>\<close>
 
 \<comment> \<open>exist\<close>
-        show \<open>Ex1M (\<lambda>x. morphism (to_ngraph D') D'' x 
-                \<and> (\<forall>v\<in>V\<^bsub>to_ngraph B\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> to_nmorph f'\<^esub>\<^sub>V v = \<^bsub>f''\<^esub>\<^sub>V v) 
-                \<and> (\<forall>e\<in>E\<^bsub>to_ngraph B\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> to_nmorph f'\<^esub>\<^sub>E e = \<^bsub>f''\<^esub>\<^sub>E e) 
-                \<and> (\<forall>v\<in>V\<^bsub>to_ngraph C\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> to_nmorph g'\<^esub>\<^sub>V v = \<^bsub>g''\<^esub>\<^sub>V v) 
-                \<and> (\<forall>e\<in>E\<^bsub>to_ngraph C\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> to_nmorph g'\<^esub>\<^sub>E e = \<^bsub>g''\<^esub>\<^sub>E e)) (to_ngraph D')\<close>
+        show \<open>Ex1M (\<lambda>x. morphism D' D'' x 
+                \<and> (\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>V v = \<^bsub>f''\<^esub>\<^sub>V v) 
+                \<and> (\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>E e = \<^bsub>f''\<^esub>\<^sub>E e) 
+                \<and> (\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>V v = \<^bsub>g''\<^esub>\<^sub>V v) 
+                \<and> (\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>x \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>E e = \<^bsub>g''\<^esub>\<^sub>E e)) D'\<close>
         proof (rule exI, rule conjI)
 
-          show abc: \<open>morphism (to_ngraph D') D'' ?x 
-                  \<and> (\<forall>v\<in>V\<^bsub>to_ngraph B\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> to_nmorph f'\<^esub>\<^sub>V v = \<^bsub>f''\<^esub>\<^sub>V v) 
-                  \<and> (\<forall>e\<in>E\<^bsub>to_ngraph B\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> to_nmorph f'\<^esub>\<^sub>E e = \<^bsub>f''\<^esub>\<^sub>E e) 
-                  \<and> (\<forall>v\<in>V\<^bsub>to_ngraph C\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> to_nmorph g'\<^esub>\<^sub>V v = \<^bsub>g''\<^esub>\<^sub>V v) 
-                  \<and> (\<forall>e\<in>E\<^bsub>to_ngraph C\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> to_nmorph g'\<^esub>\<^sub>E e = \<^bsub>g''\<^esub>\<^sub>E e)\<close>
+          show abc: \<open>morphism D' D'' ?x 
+                  \<and> (\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>V v = \<^bsub>f''\<^esub>\<^sub>V v) 
+                  \<and> (\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>E e = \<^bsub>f''\<^esub>\<^sub>E e) 
+                  \<and> (\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>V v = \<^bsub>g''\<^esub>\<^sub>V v) 
+                  \<and> (\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>E e = \<^bsub>g''\<^esub>\<^sub>E e)\<close>
           proof -
 
 \<comment> \<open>it follows (i)\<close>           
@@ -1101,68 +899,46 @@ next
               finally show ?thesis .
             qed
 
-            moreover have \<open>morphism (to_ngraph D') D'' ?x\<close>
+            moreover have \<open>morphism D' D'' ?x\<close>
               using wf_morph_comp 
                 (* TODO, check proof *)
                 bijective_morphism.axioms(1)[OF \<open>bijective_morphism D' D u'\<close>]
-                \<open>morphism (to_ngraph D) D'' u''\<close>
-                morph_eq_nmorph_iff
-                bijective_morphism.axioms(1)[OF \<open>bijective_morphism D' D u'\<close>]
-              unfolding morph_comp_def
-              by (metis morph_comp_def morph_eq_nmorph_iff pre_morph.ext_inject pre_morph.surjective)
+                \<open>morphism D D'' u''\<close>
+              by (metis morph_comp_def pre_morph.select_convs(1) pre_morph.select_convs(2))
+
 
 
             moreover 
             have  
-              \<open>\<forall>v\<in>V\<^bsub>to_ngraph B\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> to_nmorph f'\<^esub>\<^sub>V v = \<^bsub>f''\<^esub>\<^sub>V v\<close> 
-              \<open>\<forall>e\<in>E\<^bsub>to_ngraph B\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> to_nmorph f'\<^esub>\<^sub>E e = \<^bsub>f''\<^esub>\<^sub>E e\<close>
+              \<open>\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>V v = \<^bsub>f''\<^esub>\<^sub>V v\<close> 
+              \<open>\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>E e = \<^bsub>f''\<^esub>\<^sub>E e\<close>
               and 
-              \<open>\<forall>v\<in>V\<^bsub>to_ngraph C\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> to_nmorph g'\<^esub>\<^sub>V v = \<^bsub>g''\<^esub>\<^sub>V v\<close> 
-              \<open>\<forall>e\<in>E\<^bsub>to_ngraph C\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> to_nmorph g'\<^esub>\<^sub>E e = \<^bsub>g''\<^esub>\<^sub>E e\<close>
+              \<open>\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>V v = \<^bsub>g''\<^esub>\<^sub>V v\<close> 
+              \<open>\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>E e = \<^bsub>g''\<^esub>\<^sub>E e\<close>
             proof -
 
 
-              show \<open>\<forall>v\<in>V\<^bsub>to_ngraph B\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> to_nmorph f'\<^esub>\<^sub>V v = \<^bsub>f''\<^esub>\<^sub>V v\<close>
+              show \<open>\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>V v = \<^bsub>f''\<^esub>\<^sub>V v\<close>
               proof -
                 (* here, we have to lift the statement calculcation(1) into to nat space *)
-                have \<open>\<^bsub>to_nmorph u' \<circ>\<^sub>\<rightarrow> to_nmorph f'\<^esub>\<^sub>V v = \<^bsub>to_nmorph f\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>to_ngraph B\<^esub> \<close> for v
-                  using calculation (1) comp_lift_node1 that
+                have \<open>\<^bsub>u' \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>V v = \<^bsub>f\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>B\<^esub> \<close> for v
+                  using calculation (1) that
                   by blast
 
                 thus ?thesis
-                  using \<open>\<forall>v\<in>V\<^bsub>to_ngraph B\<^esub>. \<^bsub>u'' \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>V v = \<^bsub>f''\<^esub>\<^sub>V v\<close>
+                  using \<open>\<forall>v\<in>V\<^bsub>B\<^esub>. \<^bsub>u'' \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>V v = \<^bsub>f''\<^esub>\<^sub>V v\<close>
                   by (simp add: morph_comp_def)
               qed
             next
-              show \<open>\<forall>e\<in>E\<^bsub>to_ngraph B\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> to_nmorph f'\<^esub>\<^sub>E e = \<^bsub>f''\<^esub>\<^sub>E e\<close>
-              proof -
-                have \<open>\<^bsub>to_nmorph u' \<circ>\<^sub>\<rightarrow> to_nmorph f'\<^esub>\<^sub>E e = \<^bsub>to_nmorph f\<^esub>\<^sub>E e\<close> if \<open>e \<in> E\<^bsub>to_ngraph B\<^esub>\<close> for e
-                  using calculation(2) comp_lift_edge1 that
-                  by blast
-                thus ?thesis
-                  using \<open>\<forall>e\<in>E\<^bsub>to_ngraph B\<^esub>. \<^bsub>u'' \<circ>\<^sub>\<rightarrow> to_nmorph f\<^esub>\<^sub>E e = \<^bsub>f''\<^esub>\<^sub>E e\<close>
-                  by (simp add: morph_comp_def)
-              qed
+              show \<open>\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> f'\<^esub>\<^sub>E e = \<^bsub>f''\<^esub>\<^sub>E e\<close>
+                by (metis (no_types, opaque_lifting) \<open>\<forall>e\<in>E\<^bsub>B\<^esub>. \<^bsub>u'' \<circ>\<^sub>\<rightarrow> f\<^esub>\<^sub>E e = \<^bsub>f''\<^esub>\<^sub>E e\<close> calculation(2) morph_comp_def o_apply pre_morph.simps(2))
             next
-              show \<open>\<forall>v\<in>V\<^bsub>to_ngraph C\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> to_nmorph g'\<^esub>\<^sub>V v = \<^bsub>g''\<^esub>\<^sub>V v\<close>
-              proof -
-                have \<open>\<^bsub>to_nmorph u' \<circ>\<^sub>\<rightarrow> to_nmorph g'\<^esub>\<^sub>V v = \<^bsub>to_nmorph g\<^esub>\<^sub>V v\<close> if \<open>v \<in> V\<^bsub>to_ngraph C\<^esub>\<close> for v
-                  using calculation(3) comp_lift_node1 that
-                  by blast
-                thus ?thesis
-                  using \<open>\<forall>v\<in>V\<^bsub>to_ngraph C\<^esub>. \<^bsub>u'' \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>V v = \<^bsub>g''\<^esub>\<^sub>V v\<close>
-                  by (simp add: morph_comp_def)
-              qed
+              show \<open>\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>V v = \<^bsub>g''\<^esub>\<^sub>V v\<close>
+                by (metis (no_types, lifting) \<open>\<forall>v\<in>V\<^bsub>C\<^esub>. \<^bsub>u'' \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>V v = \<^bsub>g''\<^esub>\<^sub>V v\<close> calculation(3) morph_comp_def o_apply pre_morph.select_convs(1))
+
             next
-              show \<open>\<forall>e\<in>E\<^bsub>to_ngraph C\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> to_nmorph g'\<^esub>\<^sub>E e = \<^bsub>g''\<^esub>\<^sub>E e\<close>
-              proof -
-                have \<open>\<^bsub>to_nmorph u' \<circ>\<^sub>\<rightarrow> to_nmorph g'\<^esub>\<^sub>E e = \<^bsub>to_nmorph g\<^esub>\<^sub>E e\<close> if \<open>e \<in> E\<^bsub>to_ngraph C\<^esub>\<close> for e
-                  using calculation(4) comp_lift_edge1 that
-                  by blast
-                thus ?thesis
-                  using \<open>\<forall>e\<in>E\<^bsub>to_ngraph C\<^esub>. \<^bsub>u'' \<circ>\<^sub>\<rightarrow> to_nmorph g\<^esub>\<^sub>E e = \<^bsub>g''\<^esub>\<^sub>E e\<close>
-                  by (simp add: morph_comp_def)
-              qed
+              show \<open>\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>?x \<circ>\<^sub>\<rightarrow> g'\<^esub>\<^sub>E e = \<^bsub>g''\<^esub>\<^sub>E e\<close>
+                by (metis (no_types, opaque_lifting) \<open>\<forall>e\<in>E\<^bsub>C\<^esub>. \<^bsub>u'' \<circ>\<^sub>\<rightarrow> g\<^esub>\<^sub>E e = \<^bsub>g''\<^esub>\<^sub>E e\<close> calculation(4) morph_comp_def o_apply pre_morph.select_convs(2))
             qed
 
             ultimately show ?thesis

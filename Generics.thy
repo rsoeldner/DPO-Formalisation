@@ -2,7 +2,18 @@ theory Generics
   imports Graph Morphism "HOL-Library.Countable"
 begin
 
+text_raw \<open>\DefineSnippet{ngraph}{\<close>
 type_synonym ('l,'m) ngraph = "(nat,nat,'l,'m) pre_graph"
+text_raw \<open>}%EndSnippet\<close>
+
+(*
+experiment begin
+text_raw \<open>\DefineSnippet{countable}{\<close>
+class countable =
+  assumes ex_inj: "\<exists>to_nat :: 'a \<Rightarrow> nat. inj to_nat"
+text_raw \<open>}%EndSnippet\<close>
+end
+*)
 
 definition to_ngraph 
               :: "('v::countable,'e :: countable,'l,'m) pre_graph 
